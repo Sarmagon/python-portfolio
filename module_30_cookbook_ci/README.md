@@ -20,7 +20,7 @@
 
 ## 🛠️ Стек технологий
 
-- **Язык**: Python 3.10+ (в разработке используется Python 3.14)
+- **Язык**: Python 3.10+
 - **Фреймворк**: FastAPI + Uvicorn
 - **База данных**: SQLAlchemy (Async Core/ORM) + SQLite (`aiosqlite`)
 - **Валидация и сериализация**: Pydantic V1
@@ -32,9 +32,9 @@
 ## 📂 Структура проекта
 
 ```text
-homework/
+fastapi-cookbook-ci/
 ├── database.py       # Настройка асинхронного движка и Dependency Injection для сессий
-├── models.py         # ORM-модели SQLAlchemy (Recipe, Ingredient) с docstrings
+├── models.py         # ORM-Modelli SQLAlchemy (Recipe, Ingredient) с docstrings
 ├── schemas.py        # Pydantic-схемы для валидации и сериализации данных (с Field descriptions)
 ├── main.py           # Точки входа (endpoints) и управление жизненным циклом (lifespan)
 ├── test_main.py      # Интеграционные тесты API (5 тестовых сценариев)
@@ -96,7 +96,7 @@ pytest test_main.py -v
 
 - [ ] **Миграция на PostgreSQL**: Замена `aiosqlite` на `asyncpg` и вынос конфигурации БД в `.env`.
 - [ ] **Контейнеризация**: Написание `Dockerfile` и создание `docker-compose.yml` для поднятия приложения и БД одной командой.
-- [x] CI/CD: Настроен GitHub Actions для автоматического прогона тестов и линтеров (flake8, black, isort, mypy) при каждом push.
+- [x] **CI/CD**: Настроен GitHub Actions для автоматического прогона тестов и линтеров (flake8, black, isort, mypy) при каждом push.
 - [ ] **Расширение API**: Добавление пагинации, фильтрации по ингредиентам и эндпоинтов `PUT`/`DELETE` для рецептов.
 
 ---
@@ -109,4 +109,4 @@ Junior Backend Developer / Python Developer
 
 - 📧 **Email**: [stasus.sv@mail.ru](mailto:stasus.sv@mail.ru)
 - ✈️ **Telegram**: [@Sarmagon](https://t.me/Sarmagon)
-- 💻 **GitHub**: [github.com/Sarmagon/python-portfolio](https://github.com/Sarmagon/python-portfolio)
+- 💻 **GitHub**: [github.com/Sarmagon/fastapi-cookbook-ci](https://github.com/Sarmagon/fastapi-cookbook-ci)
