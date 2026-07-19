@@ -1,0 +1,6 @@
+Flask==2.2.5
+Flask-SQLAlchemy==3.0.5
+pytest==7.4.3
+factory-boy==3.3.0
+Faker==19.6.2
+Werkzeug==2.3.7
