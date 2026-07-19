@@ -12,11 +12,11 @@
 ## 🏆 Ключевые проекты (Portfolio Highlights)
 
 ### 1. 🍳 Cookbook API с CI/CD пайплайном
-** Отдельный репозиторий**: [github.com/Sarmagon/fastapi-cookbook-ci](https://github.com/Sarmagon/fastapi-cookbook-ci)
+**📁 Папка**: `module_30_cookbook_ci` *(Также доступен как отдельный репозиторий: [fastapi-cookbook-ci](https://github.com/Sarmagon/fastapi-cookbook-ci))*
 
 Асинхронное REST API для управления кулинарной книгой с **полным циклом CI/CD**.
 
-** Ключевые особенности**:
+**🚀 Ключевые особенности**:
 - ✅ **CI/CD**: GitHub Actions (pytest, flake8, black, isort, mypy)
 - ✅ **Quality Gates**: код не попадает в main без прохождения всех проверок
 - ✅ **Async SQLAlchemy**: управление сессиями через Dependency Injection
@@ -57,7 +57,7 @@ Telegram-бот для поиска рецептов через TheMealDB API с
 
 ---
 
-### 4. ️ Сервис обработки изображений с Celery
+### 4. 🖼️ Сервис обработки изображений с Celery
 **📁 Папка**: `module_22_celery`
 
 REST API для загрузки и асинхронной обработки изображений с отправкой результатов на email.
@@ -91,16 +91,12 @@ REST API для загрузки и асинхронной обработки и
 
 ## 📂 Структура репозитория
 
-```
+```text
 python-portfolio/
-├── module_29_parking_api/      #  Parking API (Flask + pytest + Alembic)
+├── module_30_cookbook_ci/       # 🍳 Cookbook API with CI/CD (FastAPI + GitHub Actions)
+├── module_29_parking_api/       # 🚗 Parking API (Flask + pytest + Alembic)
 ├── module_22_celery/            # 🖼️ Image Processing Service (Celery + Redis)
-├── module_telegram_bot/         # 🤖 Recipe Bot (Telegram API + Peewee)
-├── module_26_cookbook_api/      #  Cookbook API (FastAPI + Async SQLAlchemy)
-├── module_09_docker/            # 🐳 Docker deployment examples
-├── module_12_multitasking/      # 🧵 Multithreading/multiprocessing examples
-├── module_21_orm/               # 📚 ORM examples (SQLAlchemy)
-└── file-sync-service/           # 🔄 File synchronization utility
+└── module_telegram_bot/         # 🤖 Recipe Bot (Telegram API + Peewee)
 ```
 
 ---
@@ -109,8 +105,8 @@ python-portfolio/
 
 - ✅ **20+ проектов** реализовано в ходе обучения
 - ✅ **CI/CD настроен** для Cookbook API (GitHub Actions)
-- ✅ **Code Quality**: все проекты проходят flake8, black, isort, mypy
-- ✅ **Test Coverage**: ключевые проекты покрыты интеграционными тестами
+- ✅ **Code Quality**: ключевые проекты проходят flake8, black, isort, mypy
+- ✅ **Test Coverage**: проекты покрыты интеграционными тестами (pytest, Factory Boy)
 - ✅ **Production-ready**: Application Factory, Dependency Injection, миграции БД
 
 ---
@@ -118,7 +114,7 @@ python-portfolio/
 ## 👨‍💻 Об авторе
 
 **Станислав Смирнов**  
- Москва, РФ  
+📍 Москва, РФ  
 🎓 **Опыт**: 18 лет руководящей работы в технической сфере (ГУП «Московский метрополитен»)  
 🏆 **Награда**: «Почётный работник транспорта города Москвы» (2023)
 
@@ -126,14 +122,14 @@ python-portfolio/
 
 ### 📞 Контакты
 - 📧 **Email**: [stasus.sv@mail.ru](mailto:stasus.sv@mail.ru)
--  **Telegram**: [@Sarmagon](https://t.me/Sarmagon)
+- ✈️ **Telegram**: [@Sarmagon](https://t.me/Sarmagon)
 - 💼 **GitHub**: [github.com/Sarmagon](https://github.com/Sarmagon)
 
 ---
 
 ## 🚀 Планы по развитию
 
-- [x] ~~Настройка CI/CD~~ ✅ Реализовано для Cookbook API
+- [x] Настройка CI/CD (уже реализовано для Cookbook API через GitHub Actions)
 - [ ] Миграция всех проектов на PostgreSQL
 - [ ] Добавление интеграционных тестов во все REST API проекты
 - [ ] Изучение Django и создание полноценного веб-приложения
@@ -141,4 +137,5 @@ python-portfolio/
 
 ---
 
-*Все проекты созданы в учебных целях и демонстрируют применение современных практик backend-разработки.*
+*Все проекты созданы в учебных целях и демонстрируют применение современных практик backend-разработки.*  
+*Last updated: July 2026*
