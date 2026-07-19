@@ -1,8 +1,0 @@
-cd C:\Users\!\OneDrive\Skillbox\GitLab\python-portfolio\module_21_orm
-
-@"
-flask
-flask-restful
-sqlalchemy
-marshmallow
-"@ | Out-File -FilePath "requirements.txt" -Encoding UTF8

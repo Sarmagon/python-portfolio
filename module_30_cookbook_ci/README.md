@@ -25,7 +25,7 @@
 - **База данных**: SQLAlchemy (Async Core/ORM) + SQLite (`aiosqlite`)
 - **Валидация и сериализация**: Pydantic V1
 - **Тестирование**: Pytest + HTTPX (`TestClient`)
-- **Инструменты**: Git, GitHub, Virtual Environments (`venv`)
+- **Инструменты**: Git, GitHub, GitHub Actions, flake8, black, isort, mypy, venv
 
 ---
 
@@ -49,8 +49,8 @@ homework/
 
 1. **Клонируйте репозиторий** и перейдите в папку проекта:
    ```bash
-   git clone https://github.com/Sarmagon/python-portfolio.git
-   cd python-portfolio/module_26_fastapi/homework
+   git clone https://github.com/Sarmagon/fastapi-cookbook-ci.git
+   cd fastapi-cookbook-ci
    ```
 
 2. **Создайте и активируйте виртуальное окружение**:
@@ -96,7 +96,7 @@ pytest test_main.py -v
 
 - [ ] **Миграция на PostgreSQL**: Замена `aiosqlite` на `asyncpg` и вынос конфигурации БД в `.env`.
 - [ ] **Контейнеризация**: Написание `Dockerfile` и создание `docker-compose.yml` для поднятия приложения и БД одной командой.
-- [ ] **CI/CD**: Настройка GitLab CI или GitHub Actions для автоматического прогона `pytest` при каждом push.
+- [x] CI/CD: Настроен GitHub Actions для автоматического прогона тестов и линтеров (flake8, black, isort, mypy) при каждом push.
 - [ ] **Расширение API**: Добавление пагинации, фильтрации по ингредиентам и эндпоинтов `PUT`/`DELETE` для рецептов.
 
 ---

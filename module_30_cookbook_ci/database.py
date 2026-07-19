@@ -8,7 +8,7 @@
 - Dependency Injection для создания сессий (рекомендация FastAPI)
 """
 
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -24,11 +24,7 @@ engine = create_async_engine(DATABASE_URL, echo=False)
 # Фабрика асинхронных сессий
 # expire_on_commit=False — атрибуты объектов не будут "протухать" после коммита,
 # что важно при работе с async сессиями
-async_session = sessionmaker(
-    engine, 
-    expire_on_commit=False, 
-    class_=AsyncSession
-)
+async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 
 # Базовый класс для всех ORM-моделей
 Base = declarative_base()
@@ -40,10 +36,10 @@ Base = declarative_base()
 async def get_session() -> AsyncSession:
     """
     Dependency для получения асинхронной сессии БД.
-    
+
     Используется в эндпоинтах через Depends(get_session).
     Создает новую сессию для каждого запроса и закрывает её после завершения.
-    
+
     Yields:
         AsyncSession: асинхронная сессия SQLAlchemy
     """

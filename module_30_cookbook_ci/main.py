@@ -10,17 +10,17 @@
 Применяет Dependency Injection для сессий и lifespan для управления жизненным циклом.
 """
 
-from typing import List
 from contextlib import asynccontextmanager
+from typing import List
 
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import Depends, FastAPI, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
-from sqlalchemy.ext.asyncio import AsyncSession
 
 import models
 import schemas
-from database import engine, Base, get_session
+from database import Base, engine, get_session
 
 
 # Современный способ управления запуском и остановкой приложения (lifespan)
@@ -29,16 +29,16 @@ from database import engine, Base, get_session
 async def lifespan(app: FastAPI):
     """
     Контекстный менеджер жизненного цикла приложения.
-    
+
     Выполняется при запуске: создаёт таблицы в базе данных.
     Выполняется при остановке: освобождает ресурсы движка.
     """
     # Код здесь выполняется ПРИ ЗАПУСКЕ (startup)
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-    
+
     yield
-    
+
     # Код здесь выполняется ПРИ ОСТАНОВКЕ (shutdown)
     await engine.dispose()
 
@@ -63,12 +63,12 @@ app = FastAPI(
     к детальной информации рецепта (GET /recipes/{recipe_id}).
     """,
     version="1.0.0",
-    lifespan=lifespan  # Подключаем lifespan для управления жизненным циклом
+    lifespan=lifespan,  # Подключаем lifespan для управления жизненным циклом
 )
 
 
 @app.post(
-    '/recipes',
+    "/recipes",
     response_model=schemas.RecipeOut,
     status_code=201,
     summary="Создать новый рецепт",
@@ -80,29 +80,28 @@ app = FastAPI(
     - **cook_time**: время приготовления в минутах (должно быть > 0)
     - **description**: текстовое описание рецепта (опционально)
     - **ingredients**: список ингредиентов с названием и количеством
-    """
+    """,
 )
 async def create_recipe(
-    recipe: schemas.RecipeIn,
-    session: AsyncSession = Depends(get_session)
+    recipe: schemas.RecipeIn, session: AsyncSession = Depends(get_session)
 ) -> models.Recipe:
     """
     Эндпоинт создания рецепта.
-    
+
     Args:
         recipe: данные рецепта в формате RecipeIn (название, время, описание, ингредиенты)
         session: асинхронная сессия БД (внедряется через Dependency Injection)
-    
+
     Returns:
         Созданный рецепт с присвоенным ID и начальным значением views=0
     """
     # Извлекаем данные из Pydantic модели (V1 синтаксис)
     data = recipe.dict()
-    ingredients_data = data.pop('ingredients', [])
+    ingredients_data = data.pop("ingredients", [])
 
     # Создаём объект рецепта
     new_recipe = models.Recipe(**data)
-    
+
     # Добавляем ингредиенты к рецепту
     for ing_data in ingredients_data:
         new_recipe.ingredients.append(models.Ingredient(**ing_data))
@@ -111,12 +110,12 @@ async def create_recipe(
     session.add(new_recipe)
     await session.commit()
     await session.refresh(new_recipe)
-        
+
     return new_recipe
 
 
 @app.get(
-    '/recipes',
+    "/recipes",
     response_model=List[schemas.RecipeListItem],
     summary="Получить список всех рецептов",
     description="""
@@ -131,17 +130,17 @@ async def create_recipe(
     - title: название блюда
     - cook_time: время готовки в минутах
     - views: количество просмотров
-    """
+    """,
 )
 async def get_recipes(
-    session: AsyncSession = Depends(get_session)
+    session: AsyncSession = Depends(get_session),
 ) -> List[models.Recipe]:
     """
     Эндпоинт получения списка рецептов.
-    
+
     Args:
         session: асинхронная сессия БД (внедряется через Dependency Injection)
-    
+
     Returns:
         Список всех рецептов, отсортированных по популярности и времени готовки
     """
@@ -150,16 +149,13 @@ async def get_recipes(
     res = await session.execute(
         select(models.Recipe)
         .options(selectinload(models.Recipe.ingredients))
-        .order_by(
-            models.Recipe.views.desc(), 
-            models.Recipe.cook_time.asc()
-        )
+        .order_by(models.Recipe.views.desc(), models.Recipe.cook_time.asc())
     )
     return res.scalars().all()
 
 
 @app.get(
-    '/recipes/{recipe_id}',
+    "/recipes/{recipe_id}",
     response_model=schemas.RecipeOut,
     summary="Получить детальный рецепт",
     description="""
@@ -175,22 +171,21 @@ async def get_recipes(
     - description: текстовое описание
     - views: количество просмотров (увеличено на 1)
     - ingredients: список ингредиентов с названием и количеством
-    """
+    """,
 )
 async def get_recipe(
-    recipe_id: int,
-    session: AsyncSession = Depends(get_session)
+    recipe_id: int, session: AsyncSession = Depends(get_session)
 ) -> models.Recipe:
     """
     Эндпоинт получения детальной информации о рецепте.
-    
+
     Args:
         recipe_id: уникальный идентификатор рецепта
         session: асинхронная сессия БД (внедряется через Dependency Injection)
-    
+
     Returns:
         Полная информация о рецепте с ингредиентами
-    
+
     Raises:
         HTTPException 404: если рецепт с указанным ID не найден
     """
@@ -205,15 +200,14 @@ async def get_recipe(
     # Если рецепт не найден — возвращаем 404
     if not recipe:
         raise HTTPException(
-            status_code=404, 
-            detail=f"Рецепт с id={recipe_id} не найден"
+            status_code=404, detail=f"Рецепт с id={recipe_id} не найден"
         )
 
     # Увеличиваем счётчик просмотров
     recipe.views += 1
-    
+
     # Сохраняем изменения
     await session.commit()
     await session.refresh(recipe)
-        
+
     return recipe
