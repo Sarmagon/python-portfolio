@@ -20,6 +20,7 @@
 - ✅ Обработка ошибки `404`
 - ✅ Swagger / OpenAPI документация
 - ✅ Интеграционные тесты на pytest
+- ✅ GitHub Actions CI
 
 ---
 
@@ -34,8 +35,9 @@
 - Pydantic
 - pytest
 - TestClient / HTTPX
+- GitHub Actions
 
-Для проверки качества кода также подготовлена конфигурация:
+Для автоматических проверок качества кода используются:
 
 - flake8
 - black
@@ -67,7 +69,7 @@ SQLAlchemy ORM
 SQLite + aiosqlite
 ```
 
-Для каждой операции с БД создаётся асинхронная сессия через:
+Для каждой операции с базой данных создаётся асинхронная сессия через:
 
 ```python
 Depends(get_session)
@@ -201,18 +203,12 @@ selectinload(Recipe.ingredients)
 
 Pydantic проверяет входные данные.
 
-Например:
-
-```text
-title
-```
+### `title`
 
 - обязательное поле;
 - длина от 1 до 100 символов.
 
-```text
-cook_time
-```
+### `cook_time`
 
 - обязательное поле;
 - значение должно быть не меньше 1.
@@ -227,9 +223,9 @@ cook_time
 
 Проверяются:
 
-- создание рецепта;
 - создание рецепта с ингредиентами;
 - создание рецепта без ингредиентов;
+- получение списка рецептов;
 - сортировка;
 - увеличение счётчика просмотров;
 - обработка отсутствующего рецепта.
@@ -246,7 +242,7 @@ pytest test_main.py -v
 
 ## 📚 Swagger
 
-После запуска приложения интерактивная документация доступна:
+После запуска приложения интерактивная документация доступна по адресу:
 
 ```text
 http://127.0.0.1:8000/docs
@@ -266,7 +262,7 @@ http://127.0.0.1:8000/redoc
 
 ```bash
 git clone https://github.com/Sarmagon/python-portfolio.git
-cd python-portfolio/module_30_cookbook_ci
+cd python-portfolio/cookbook-api
 ```
 
 ### 2. Создать виртуальное окружение
@@ -291,6 +287,12 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+Для запуска инструментов проверки качества кода:
+
+```bash
+pip install -r requirements-dev.txt
+```
+
 ### 4. Запустить API
 
 ```bash
@@ -302,42 +304,60 @@ uvicorn main:app --reload
 ## 📂 Структура проекта
 
 ```text
-module_30_cookbook_ci/
-├── database.py          # async engine и Dependency Injection
-├── main.py              # FastAPI application и endpoints
-├── models.py            # SQLAlchemy ORM-модели
-├── schemas.py           # Pydantic-схемы
-├── test_main.py         # интеграционные тесты
-├── requirements.txt     # зависимости приложения
-├── requirements-dev.txt # инструменты разработки
-├── workflows/
-│   └── ci.yml           # конфигурация проверок CI
-├── task.md              # исходное учебное задание
-├── .gitignore
-└── README.md
+python-portfolio/
+├── .github/
+│   └── workflows/
+│       └── cookbook-ci.yml
+│
+└── cookbook-api/
+    ├── database.py
+    ├── main.py
+    ├── models.py
+    ├── schemas.py
+    ├── test_main.py
+    ├── requirements.txt
+    ├── requirements-dev.txt
+    ├── task.md
+    ├── .gitignore
+    └── README.md
 ```
+
+### Назначение основных файлов
+
+- `main.py` — FastAPI-приложение и endpoints
+- `database.py` — async engine, сессии и Dependency Injection
+- `models.py` — SQLAlchemy ORM-модели
+- `schemas.py` — Pydantic-схемы
+- `test_main.py` — интеграционные тесты
+- `requirements.txt` — зависимости приложения
+- `requirements-dev.txt` — инструменты разработки и проверки качества
+- `task.md` — исходное учебное задание
 
 ---
 
-## 🔍 Проверки качества кода
+## 🔍 GitHub Actions CI
 
-В проекте подготовлена конфигурация автоматических проверок:
-
-```text
-pytest
-flake8
-black
-isort
-mypy
-```
-
-После финальной реорганизации портфолио workflow будет перенесён в корневой каталог:
+В репозитории настроен GitHub Actions workflow:
 
 ```text
-.github/workflows/
+.github/workflows/cookbook-ci.yml
 ```
 
-чтобы проверки выполнялись непосредственно через GitHub Actions в основном репозитории.
+При каждом `push` и `pull request` в ветки `main` и `master` автоматически выполняются:
+
+- `pytest`
+- `flake8`
+- `black`
+- `isort`
+- `mypy`
+
+Workflow запускает команды из каталога:
+
+```text
+cookbook-api/
+```
+
+Это позволяет автоматически проверять тесты, стиль кода, форматирование, порядок импортов и типизацию.
 
 ---
 
@@ -358,6 +378,7 @@ mypy
 - HTTP status codes;
 - OpenAPI;
 - интеграционным тестированием;
+- GitHub Actions;
 - автоматическими проверками качества кода.
 
 ---

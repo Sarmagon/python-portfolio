@@ -264,7 +264,7 @@ python test_api.py
 ## 📂 Структура проекта
 
 ```text
-module_22_celery/
+image-processing-service/
 ├── app.py             # Flask API
 ├── celery_app.py      # конфигурация Celery и Celery Beat
 ├── tasks.py           # фоновые Celery-задачи

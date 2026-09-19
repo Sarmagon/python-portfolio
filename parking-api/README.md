@@ -257,7 +257,7 @@ ParkingFactory
 
 ```bash
 git clone https://github.com/Sarmagon/python-portfolio.git
-cd python-portfolio/module_29_parking_api
+cd python-portfolio/parking-api
 ```
 
 ### 2. Создать виртуальное окружение
@@ -293,7 +293,7 @@ pytest -v
 ## 📂 Структура проекта
 
 ```text
-module_29_parking_api/
+parking-api/
 ├── app/
 │   ├── __init__.py       # Application Factory
 │   ├── models.py         # SQLAlchemy ORM-модели

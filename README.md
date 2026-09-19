@@ -15,7 +15,7 @@
 
 ### 1. 🍳 Cookbook API с CI-пайплайном
 
-**📁 Папка:** `module_30_cookbook_ci`  
+**📁 Папка:** `cookbook-api`
 Также доступен как отдельный репозиторий: [fastapi-cookbook-ci](https://github.com/Sarmagon/fastapi-cookbook-ci)
 
 Асинхронное REST API для управления кулинарной книгой на FastAPI.
@@ -34,7 +34,7 @@
 
 ### 2. 🚗 REST API сервиса парковок
 
-**📁 Папка:** `module_29_parking_api`
+**📁 Папка:** `parking-api`
 
 REST API для системы автоматической парковки с бизнес-логикой регистрации клиентов, заезда, выезда и проверки доступности парковочных мест.
 
@@ -52,7 +52,7 @@ REST API для системы автоматической парковки с 
 
 ### 3. 🤖 Telegram-бот для поиска рецептов
 
-**📁 Папка:** `module_telegram_bot`
+**📁 Папка:** `recipe-telegram-bot`
 
 Итоговый проект курса **«Основы Python»**.
 
@@ -73,7 +73,7 @@ Telegram-бот для поиска рецептов через TheMealDB API с
 
 ### 4. 🖼️ Сервис обработки изображений с Celery
 
-**📁 Папка:** `module_22_celery`
+**📁 Папка:** `image-processing-service`
 
 Сервис для асинхронной обработки изображений и выполнения фоновых задач.
 
@@ -114,10 +114,10 @@ Telegram-бот для поиска рецептов через TheMealDB API с
 ```text
 python-portfolio/
 ├── certificates/                 # 🎓 Сертификаты об обучении
-├── module_30_cookbook_ci/        # 🍳 FastAPI Cookbook API + GitHub Actions
-├── module_29_parking_api/        # 🚗 Parking REST API
-├── module_22_celery/             # 🖼️ Celery Image Processing Service
-├── module_telegram_bot/          # 🤖 Telegram Recipe Bot
+├── cookbook-api/        # 🍳 FastAPI Cookbook API + GitHub Actions
+├── parking-api/        # 🚗 Parking REST API
+├── image-processing-service/             # 🖼️ Celery Image Processing Service
+├── recipe-telegram-bot/          # 🤖 Telegram Recipe Bot
 ├── .gitignore
 └── README.md
 ```
@@ -150,11 +150,11 @@ python-portfolio/
 
 ## 👨‍💻 Об авторе
 
-**Станислав Смирнов**  
-📍 Москва, РФ  
-💻 Python Backend Developer / Junior Backend Developer  
-🎓 Продолжаю обучение по направлениям Python Advanced и Django  
-🛠️ 18+ лет опыта в технической сфере, включая руководящую работу  
+**Станислав Смирнов**
+📍 Москва, РФ
+💻 Python Backend Developer / Junior Backend Developer
+🎓 Продолжаю обучение по направлениям Python Advanced и Django
+🛠️ 18+ лет опыта в технической сфере, включая руководящую работу
 🏆 «Почётный работник транспорта города Москвы» (2023)
 
 Параллельно с основной профессиональной деятельностью развиваюсь в направлении **Backend-разработки на Python**.

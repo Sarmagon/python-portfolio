@@ -190,7 +190,7 @@ waiting_for_ingredient
 
 ```bash
 git clone https://github.com/Sarmagon/python-portfolio.git
-cd python-portfolio/module_telegram_bot
+cd python-portfolio/recipe-telegram-bot
 ```
 
 ### 2. Создать виртуальное окружение
@@ -254,7 +254,7 @@ python main.py
 ## 📂 Структура проекта
 
 ```text
-module_telegram_bot/
+recipe-telegram-bot/
 ├── api/
 │   ├── recipe_api.py        # работа с TheMealDB API
 │   └── translations.py      # словари переводов RU → EN
