@@ -1,104 +1,93 @@
-# Практическая работа: Сервис обработки изображений (Celery)
+# 🖼️ Image Processing Service — Celery + Redis
 
-## Цели практической работы
-- Применить знания об асинхронных задачах в работе с сервисом с реальной бизнес-логикой.
-- Научиться применять Celery и Celery Beat в работе с фоновыми задачами.
-- Научиться интегрировать Celery и Flower в веб-приложение.
+Сервис асинхронной обработки изображений на Flask.
 
-## Что нужно сделать
-Создайте сервис обработки изображений — веб-приложение с настоящей бизнес-логикой. 
+Пользователь загружает одно или несколько изображений и указывает email. Изображения ставятся в очередь Celery, обрабатываются в фоне, объединяются в ZIP-архив и отправляются пользователю по электронной почте.
 
-В материалах мы часто прибегали к задержкам для симуляции вычислений. 
+Дополнительно реализована подписка на еженедельную email-рассылку.
 
-Представьте, что пользователь загружает на сервис некоторое количество изображений, указывая свою почту. Ко всем изображениям применяется эффект размытия. Изображения отправляются ему на почту в виде архива или списка изображений по мере готовности.
+---
 
-Реализуйте следующие endpoint:
+## 🚀 Возможности
 
-- **POST /blur** <br>
-Ставит в очередь обработку переданных изображений. Возвращает ID группы задач по обработке изображений.
-- **GET /status/<id>**<br>
-Возвращает информацию о задаче: прогресс (количество обработанных задач) и статус (в процессе обработки, обработано).
-- **POST /subscribe**<br>
-Пользователь указывает почту и подписывается на рассылку. Каждую неделю ему будет приходить письмо о сервисе на почту .
-- **POST /unsubscribe**<br>
-Пользователь указывает почту и отписывается от рассылки.
+- ✅ Асинхронная обработка изображений через Celery
+- ✅ Redis как broker и result backend
+- ✅ Параллельная обработка нескольких изображений через Celery Group
+- ✅ Отслеживание прогресса выполнения задач
+- ✅ Создание ZIP-архива с обработанными изображениями
+- ✅ Отправка результата пользователю по email
+- ✅ Подписка и отписка от рассылки
+- ✅ Celery Beat для периодических задач
+- ✅ Flower для мониторинга Celery
+- ✅ SQLite + SQLAlchemy для хранения подписчиков
+- ✅ Автоматический smoke-test основных API endpoint
 
-Функции для обработки изображения и отправки письма уже реализованы, поэтому можете сконцентрироваться на внедрении очереди задач.
+---
 
-## Полезные материалы
-- [Celery — Periodic Tasks](https://docs.celeryq.dev/en/stable/userguide/periodic-tasks.html)
-- [Sending Emails With Python](https://realpython.com/python-send-email/)
-- [Image Processing With the Python Pillow Library](https://realpython.com/image-processing-with-the-python-pillow-library/)
+## 🛠️ Стек
 
-## Что оценивается
-- Рассылка реализована с помощью Celery Beat.
-- Celery Beat запускается в отдельном процессе.
-- Используется Flower для визуализации и мониторинга задач.
-- Все функции реализованы и работают корректно.
+- Python
+- Flask
+- Celery
+- Redis
+- Celery Beat
+- Flower
+- SQLAlchemy
+- SQLite
+- Pillow
+- SMTP
+- Requests
 
-## 🚀 Инструкция по запуску проекта
+---
 
-### 1. Установка зависимостей
-```bash
-pip install -r requirements.txt
-```
+## 🏗️ Как работает сервис
 
-### 2. Настройка конфигурации
-Создайте файл `.env` в корне проекта и укажите данные SMTP-сервера:
-```env
-SMTP_USER=your_email@yandex.ru
-SMTP_PASSWORD=your_app_password
-SMTP_HOST=smtp.yandex.ru
-SMTP_PORT=587
-```
-
-### 3. Запуск сервисов
-Для работы приложения необходимо запустить 4 процесса в отдельных терминалах:
-
-**Терминал 1: Redis (брокер сообщений)**
-```bash
-redis-server
-```
-
-**Терминал 2: Celery Worker (выполнение задач)**
-```bash
-celery -A celery_app worker --loglevel=info --pool=solo
-```
-
-**Терминал 3: Celery Beat (планировщик периодических задач)**
-```bash
-celery -A celery_app beat --loglevel=info
-```
-
-**Терминал 4: Flower (мониторинг)**
-```bash
-celery -A celery_app flower --port=5555
-```
-
-**Терминал 5: Flask API**
-```bash
-python app.py
-```
-
-### 4. Проверка работы (Автотесты)
-Запустите скрипт автоматической проверки всех эндпоинтов:
-```bash
-python test_api.py
-```
-
-**Ожидаемый вывод:**
 ```text
-✅ POST /blur — OK
-✅ GET /status — completed
-✅ POST /subscribe — OK
-✅ POST /unsubscribe — OK
- Все тесты пройдены!
+Клиент
+  │
+  │ POST /blur
+  ▼
+Flask API
+  │
+  ├── сохраняет изображения
+  │
+  └── создаёт группу Celery-задач
+              │
+              ▼
+         Redis Broker
+              │
+              ▼
+        Celery Worker
+              │
+              ├── обработка изображений
+              ├── создание ZIP
+              └── отправка результата по email
 ```
 
-### 5. Ручное тестирование (curl)
-Если автотесты не подходят, можно проверить вручную:
+Отдельно Celery Beat запускает периодическую задачу еженедельной рассылки активным подписчикам.
 
-**Загрузка изображений:**
+---
+
+## 📡 API
+
+| Метод | Endpoint | Назначение |
+|---|---|---|
+| `POST` | `/blur` | Загружает изображения и ставит их в очередь на обработку |
+| `GET` | `/status/<group_id>` | Возвращает статус и прогресс группы задач |
+| `POST` | `/subscribe` | Подписывает email на рассылку |
+| `POST` | `/unsubscribe` | Отключает подписку |
+
+---
+
+## 📤 POST /blur
+
+Принимает:
+
+- `email` — email пользователя
+- `images` — одно или несколько изображений
+
+Пример:
+
 ```bash
 curl -X POST http://127.0.0.1:5000/blur \
   -F "email=test@example.com" \
@@ -106,33 +95,205 @@ curl -X POST http://127.0.0.1:5000/blur \
   -F "images=@test2.jpg"
 ```
 
-**Проверка статуса:**
+Пример ответа:
+
+```json
+{
+  "group_id": "task-group-id",
+  "total_images": 2,
+  "message": "Задачи поставлены в очередь"
+}
+```
+
+---
+
+## 📊 GET /status/<group_id>
+
+Позволяет проверить состояние обработки изображений.
+
 ```bash
 curl http://127.0.0.1:5000/status/<group_id>
 ```
 
-**Подписка/Отписка:**
+Пример ответа:
+
+```json
+{
+  "group_id": "task-group-id",
+  "status": "processing",
+  "progress": {
+    "completed": 1,
+    "total": 2
+  }
+}
+```
+
+После завершения всех задач статус изменяется на:
+
+```text
+completed
+```
+
+---
+
+## ✉️ Подписка на рассылку
+
+### Подписаться
+
 ```bash
-curl -X POST http://127.0.0.1:5000/subscribe -F "email=test@example.com"
-curl -X POST http://127.0.0.1:5000/unsubscribe -F "email=test@example.com"
+curl -X POST http://127.0.0.1:5000/subscribe \
+  -F "email=test@example.com"
 ```
 
-### 6. Мониторинг
-Откройте браузер по адресу: **[http://localhost:5555](http://localhost:5555)**
-Там отображается статистика выполненных задач, активные воркеры и история ошибок.
+### Отписаться
 
-## Структура проекта
+```bash
+curl -X POST http://127.0.0.1:5000/unsubscribe \
+  -F "email=test@example.com"
 ```
-homework/
-├── app.py              # Flask приложение + API endpoints
-├── celery_app.py       # Инициализация Celery
-├── tasks.py            # Логика задач (blur, email, newsletter)
-├── image.py            # Обработка изображений (Pillow)
-├── mail.py             # Отправка писем (SMTP)
-├── subscribers.py      # Работа с БД подписчиков
-├── config.py           # Конфигурация (секреты)
-├── test_api.py         # Скрипт автоматического тестирования
-├── test1.jpg           # Тестовое изображение 1
-├── test2.jpg           # Тестовое изображение 2
-└── requirements.txt    # Список зависимостей
+
+Активные подписчики хранятся в SQLite.
+
+Celery Beat запускает еженедельную рассылку:
+
+```text
+Понедельник — 09:00
 ```
+
+---
+
+## ⚙️ Установка
+
+### 1. Установить зависимости
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Настроить SMTP
+
+Создайте `.env`:
+
+```env
+SMTP_USER=your_email@yandex.ru
+SMTP_PASSWORD=your_app_password
+SMTP_HOST=smtp.yandex.ru
+SMTP_PORT=587
+```
+
+Не добавляйте `.env` с реальными учётными данными в Git.
+
+---
+
+## ▶️ Запуск
+
+Для полной работы сервиса необходимо запустить несколько процессов.
+
+### Redis
+
+```bash
+redis-server
+```
+
+### Celery Worker
+
+```bash
+celery -A celery_app worker --loglevel=info --pool=solo
+```
+
+### Celery Beat
+
+```bash
+celery -A celery_app beat --loglevel=info
+```
+
+### Flower
+
+```bash
+celery -A celery_app flower --port=5555
+```
+
+### Flask API
+
+```bash
+python app.py
+```
+
+После запуска API доступен по адресу:
+
+```text
+http://127.0.0.1:5000
+```
+
+Flower:
+
+```text
+http://127.0.0.1:5555
+```
+
+---
+
+## 🧪 Проверка API
+
+В проект добавлен smoke-test основных endpoint:
+
+```bash
+python test_api.py
+```
+
+Он проверяет:
+
+- `POST /blur`
+- `GET /status/<group_id>`
+- `POST /subscribe`
+- `POST /unsubscribe`
+
+При успешном выполнении:
+
+```text
+✅ POST /blur — OK
+✅ GET /status — completed
+✅ POST /subscribe — OK
+✅ POST /unsubscribe — OK
+
+🎉 Все тесты пройдены!
+```
+
+---
+
+## 📂 Структура проекта
+
+```text
+module_22_celery/
+├── app.py             # Flask API
+├── celery_app.py      # конфигурация Celery и Celery Beat
+├── tasks.py           # фоновые Celery-задачи
+├── image.py           # обработка изображений
+├── mail.py            # отправка email
+├── subscribers.py     # модель и работа с подписчиками
+├── config.py          # конфигурация
+├── test_api.py        # smoke-test API
+├── test1.jpg          # тестовое изображение
+├── test2.jpg          # тестовое изображение
+└── requirements.txt   # зависимости
+```
+
+---
+
+## 🎯 Что демонстрирует проект
+
+Проект показывает практическую работу с:
+
+- очередями фоновых задач;
+- асинхронной обработкой длительных операций;
+- message broker;
+- периодическими задачами;
+- мониторингом Celery;
+- REST API;
+- ORM и базой данных;
+- интеграцией с SMTP;
+- обработкой файлов.
+
+---
+
+Проект выполнен в рамках обучения Python-разработке и доработан как демонстрационный backend-проект для портфолио.
