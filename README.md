@@ -142,8 +142,9 @@ python-portfolio/
 |---|---|---:|
 | **Skillbox — Основы Python. Часть 1** | [№ SKB0469958](certificates/skillbox-python-part-1.png) | 10.02.2026 |
 | **Skillbox — Основы Python. Часть 2** | [№ SKB0487169](certificates/skillbox-python-part-2.png) | 02.05.2026 |
+| **GeekBrains / Skillbox Holding — Python-разработчик** | [№ 2835512](certificates/geekbrains-python-developer.pdf) | 17.06.2026 |
 
-Нажатие на номер сертификата открывает его изображение в GitHub.
+Нажатие на номер сертификата открывает файл сертификата в GitHub.
 
 ---
 
