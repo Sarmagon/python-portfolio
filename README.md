@@ -5,85 +5,105 @@
 [![Flask](https://img.shields.io/badge/Flask-2.0+-lightgrey.svg)](https://flask.palletsprojects.com/)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-enabled-orange.svg)](https://github.com/Sarmagon/fastapi-cookbook-ci)
 
-Коллекция **production-ready** проектов, разработанных в ходе обучения на курсе «Python-разработчик» (Skillbox). Каждый проект демонстрирует применение современных практик backend-разработки: асинхронность, тестирование, CI/CD, контейнеризация.
+Портфолио проектов, разработанных в ходе обучения по направлению **Python Backend Development**.
+
+Проекты демонстрируют практическую работу с REST API, базами данных, ORM, асинхронностью, фоновыми задачами, тестированием, контейнеризацией, внешними API и автоматизированными проверками кода.
 
 ---
 
-## 🏆 Ключевые проекты (Portfolio Highlights)
+## 🏆 Ключевые проекты
 
-### 1. 🍳 Cookbook API с CI/CD пайплайном
-**📁 Папка**: `module_30_cookbook_ci` *(Также доступен как отдельный репозиторий: [fastapi-cookbook-ci](https://github.com/Sarmagon/fastapi-cookbook-ci))*
+### 1. 🍳 Cookbook API с CI-пайплайном
 
-Асинхронное REST API для управления кулинарной книгой с **полным циклом CI/CD**.
+**📁 Папка:** `module_30_cookbook_ci`  
+Также доступен как отдельный репозиторий: [fastapi-cookbook-ci](https://github.com/Sarmagon/fastapi-cookbook-ci)
 
-**🚀 Ключевые особенности**:
-- ✅ **CI/CD**: GitHub Actions (pytest, flake8, black, isort, mypy)
-- ✅ **Quality Gates**: код не попадает в main без прохождения всех проверок
-- ✅ **Async SQLAlchemy**: управление сессиями через Dependency Injection
-- ✅ **Оптимизация**: selectinload для предотвращения N+1 запросов
-- ✅ **Тесты**: интеграционное тестирование с TestClient
+Асинхронное REST API для управления кулинарной книгой на FastAPI.
 
-**Стек**: FastAPI, SQLAlchemy (Async), Pydantic, pytest, GitHub Actions
+**🚀 Ключевые особенности:**
+
+- ✅ Асинхронная работа с БД через SQLAlchemy
+- ✅ Dependency Injection для управления сессиями
+- ✅ `selectinload` для предотвращения N+1 запросов
+- ✅ Интеграционные тесты с pytest и TestClient
+- ✅ GitHub Actions: pytest, flake8, black, isort, mypy
+
+**Стек:** FastAPI, SQLAlchemy Async, Pydantic, pytest, GitHub Actions
 
 ---
 
 ### 2. 🚗 REST API сервиса парковок
-**📁 Папка**: `module_29_parking_api`
 
-REST API для системы автоматической парковки с бизнес-логикой заезда/выезда и оплатой.
+**📁 Папка:** `module_29_parking_api`
 
-**🚀 Ключевые особенности**:
-- ✅ **Application Factory**: отложенная инициализация Flask-приложения
-- ✅ **Alembic**: миграции БД с разрешением merge-конфликтов
-- ✅ **Full testing**: pytest с фикстурами, параметризацией, Factory Boy
-- ✅ **Business logic**: проверка доступности мест, оплата картой
+REST API для системы автоматической парковки с бизнес-логикой регистрации клиентов, заезда, выезда и проверки доступности парковочных мест.
 
-**Стек**: Flask, SQLAlchemy, PostgreSQL, Alembic, pytest, Factory Boy, Faker
+**🚀 Ключевые особенности:**
+
+- ✅ Application Factory для инициализации Flask-приложения
+- ✅ SQLAlchemy ORM
+- ✅ Alembic для миграций БД
+- ✅ Интеграционные тесты на pytest
+- ✅ Factory Boy и Faker для генерации тестовых данных
+
+**Стек:** Flask, SQLAlchemy, PostgreSQL, Alembic, pytest, Factory Boy, Faker, Docker
 
 ---
 
-### 3. 🤖 Telegram-бот для поиска рецептов (Дипломный проект)
-**📁 Папка**: `module_telegram_bot`
+### 3. 🤖 Telegram-бот для поиска рецептов
 
-Telegram-бот для поиска рецептов через TheMealDB API с сохранением истории запросов.
+**📁 Папка:** `module_telegram_bot`
 
-**🚀 Ключевые особенности**:
-- ✅ **Чистая архитектура**: handlers, keyboards, api, database, config_data
-- ✅ **FSM**: управление состояниями пользователя
-- ✅ **i18n**: поддержка двух языков (RU/EN)
-- ✅ **ORM**: Peewee для работы с SQLite
+Итоговый проект курса **«Основы Python»**.
 
-**Стек**: pyTelegramBotAPI, Peewee ORM, SQLite, Requests
+Telegram-бот для поиска рецептов через TheMealDB API с поддержкой русского и английского языков и сохранением истории запросов.
+
+**🚀 Ключевые особенности:**
+
+- ✅ Разделение проекта на handlers, keyboards, api, database и config_data
+- ✅ FSM для управления состояниями пользователя
+- ✅ Поиск рецептов по названию и ингредиентам
+- ✅ Поддержка RU/EN
+- ✅ Peewee ORM + SQLite для хранения истории запросов
+- ✅ Интеграция с внешним REST API
+
+**Стек:** Python, pyTelegramBotAPI, Peewee ORM, SQLite, Requests, TheMealDB API
 
 ---
 
 ### 4. 🖼️ Сервис обработки изображений с Celery
-**📁 Папка**: `module_22_celery`
 
-REST API для загрузки и асинхронной обработки изображений с отправкой результатов на email.
+**📁 Папка:** `module_22_celery`
 
-**🚀 Ключевые особенности**:
-- ✅ **Async tasks**: Celery + Redis для фоновой обработки
-- ✅ **Scheduler**: Celery Beat для автоматической email-рассылки
-- ✅ **Monitoring**: Flower для мониторинга задач
-- ✅ **Automation**: создание ZIP-архивов с обработанными изображениями
+Сервис для асинхронной обработки изображений и выполнения фоновых задач.
 
-**Стек**: Flask, Celery, Redis, Flower, Pillow, SMTP, SQLAlchemy
+**🚀 Ключевые особенности:**
+
+- ✅ Celery + Redis для выполнения фоновых задач
+- ✅ Celery Beat для периодических задач
+- ✅ Flower для мониторинга очередей и воркеров
+- ✅ Обработка изображений через Pillow
+- ✅ Отправка результатов по email
+- ✅ Создание ZIP-архивов с обработанными файлами
+
+**Стек:** Flask, Celery, Redis, Flower, Pillow, SMTP, SQLAlchemy
 
 ---
 
 ## 🛠️ Технологический стек
 
 | Категория | Технологии |
-|-----------|------------|
-| **Язык** | Python 3.10+ (ООП, декораторы, генераторы, асинхронность) |
+|---|---|
+| **Язык** | Python 3.10+ |
 | **Web Frameworks** | FastAPI, Flask, Flask-RESTful |
-| **Базы данных** | PostgreSQL, SQLite, SQLAlchemy (Core + ORM), Peewee ORM, Alembic |
-| **Очереди задач** | Celery, Redis, Flower |
+| **Базы данных** | PostgreSQL, SQLite |
+| **ORM** | SQLAlchemy, Peewee ORM |
+| **Миграции** | Alembic |
+| **Фоновые задачи** | Celery, Redis, Flower |
 | **Контейнеризация** | Docker, Docker Compose |
-| **Тестирование** | pytest (fixtures, parametrize, markers), Factory Boy, Faker, unittest |
+| **Тестирование** | pytest, Factory Boy, Faker, unittest |
 | **Code Quality** | flake8, black, isort, mypy |
-| **CI/CD** | GitHub Actions |
+| **Автоматизация** | GitHub Actions |
 | **API** | REST API, Telegram Bot API, внешние API |
 | **Инструменты** | Git, GitHub, Linux, SSH |
 
@@ -93,21 +113,37 @@ REST API для загрузки и асинхронной обработки и
 
 ```text
 python-portfolio/
-├── module_30_cookbook_ci/       # 🍳 Cookbook API with CI/CD (FastAPI + GitHub Actions)
-├── module_29_parking_api/       # 🚗 Parking API (Flask + pytest + Alembic)
-├── module_22_celery/            # 🖼️ Image Processing Service (Celery + Redis)
-└── module_telegram_bot/         # 🤖 Recipe Bot (Telegram API + Peewee)
+├── certificates/                 # 🎓 Сертификаты об обучении
+├── module_30_cookbook_ci/        # 🍳 FastAPI Cookbook API + GitHub Actions
+├── module_29_parking_api/        # 🚗 Parking REST API
+├── module_22_celery/             # 🖼️ Celery Image Processing Service
+├── module_telegram_bot/          # 🤖 Telegram Recipe Bot
+├── .gitignore
+└── README.md
 ```
 
 ---
 
-## 📈 Достижения и метрики
+## 📈 Достижения
 
-- ✅ **20+ проектов** реализовано в ходе обучения
-- ✅ **CI/CD настроен** для Cookbook API (GitHub Actions)
-- ✅ **Code Quality**: ключевые проекты проходят flake8, black, isort, mypy
-- ✅ **Test Coverage**: проекты покрыты интеграционными тестами (pytest, Factory Boy)
-- ✅ **Production-ready**: Application Factory, Dependency Injection, миграции БД
+- ✅ Реализовано **20+ учебных и практических проектов** в ходе обучения
+- ✅ Разработаны REST API на Flask и FastAPI
+- ✅ Реализована работа с PostgreSQL и SQLite через ORM
+- ✅ Настроены интеграционные тесты на pytest
+- ✅ Использованы фоновые задачи Celery + Redis
+- ✅ Настроены автоматические проверки кода через GitHub Actions
+- ✅ Реализованы Telegram-боты и интеграции с внешними API
+
+---
+
+## 🎓 Сертификаты
+
+| Курс | Сертификат | Дата |
+|---|---|---:|
+| **Skillbox — Основы Python. Часть 1** | [№ SKB0469958](certificates/skillbox-python-part-1.png) | 10.02.2026 |
+| **Skillbox — Основы Python. Часть 2** | [№ SKB0487169](certificates/skillbox-python-part-2.png) | 02.05.2026 |
+
+Нажатие на номер сертификата открывает его изображение в GitHub.
 
 ---
 
@@ -115,27 +151,43 @@ python-portfolio/
 
 **Станислав Смирнов**  
 📍 Москва, РФ  
-🎓 **Опыт**: 18 лет руководящей работы в технической сфере (ГУП «Московский метрополитен»)  
-🏆 **Награда**: «Почётный работник транспорта города Москвы» (2023)
+💻 Python Backend Developer / Junior Backend Developer  
+🎓 Продолжаю обучение по направлениям Python Advanced и Django  
+🛠️ 18+ лет опыта в технической сфере, включая руководящую работу  
+🏆 «Почётный работник транспорта города Москвы» (2023)
 
-Параллельно с основной работой развиваюсь в направлении **Backend-разработки на Python**. Ищу позицию **стажёра или Junior-разработчика** с возможностью совмещения.
+Параллельно с основной профессиональной деятельностью развиваюсь в направлении **Backend-разработки на Python**.
+
+В ходе обучения и практики работаю с REST API, базами данных, ORM, тестированием, фоновыми задачами, Docker, GitHub Actions и Telegram Bot API.
+
+Ищу позицию **стажёра или Junior Python Backend Developer** с возможностью совмещения и дальнейшего профессионального развития в IT.
 
 ### 📞 Контакты
-- 📧 **Email**: [stasus.sv@mail.ru](mailto:stasus.sv@mail.ru)
-- ✈️ **Telegram**: [@Sarmagon](https://t.me/Sarmagon)
-- 💼 **GitHub**: [github.com/Sarmagon](https://github.com/Sarmagon)
+
+- 📧 **Email:** [stasus.sv@mail.ru](mailto:stasus.sv@mail.ru)
+- ✈️ **Telegram:** [@Sarmagon](https://t.me/Sarmagon)
+- 💼 **GitHub:** [github.com/Sarmagon](https://github.com/Sarmagon)
 
 ---
 
-## 🚀 Планы по развитию
+## 🚀 В развитии
 
-- [x] Настройка CI/CD (уже реализовано для Cookbook API через GitHub Actions)
-- [ ] Миграция всех проектов на PostgreSQL
-- [ ] Добавление интеграционных тестов во все REST API проекты
-- [ ] Изучение Django и создание полноценного веб-приложения
-- [ ] Работа с микросервисной архитектурой и message brokers (RabbitMQ)
+- [x] REST API на Flask
+- [x] REST API на FastAPI
+- [x] ORM и миграции БД
+- [x] Интеграционные тесты
+- [x] Celery + Redis
+- [x] Docker
+- [x] GitHub Actions
+- [x] Telegram Bot API
+- [ ] Django
+- [ ] PostgreSQL в асинхронных FastAPI-проектах
+- [ ] Автоматическое развёртывание приложений
+- [ ] Микросервисная архитектура
+- [ ] RabbitMQ
 
 ---
 
-*Все проекты созданы в учебных целях и демонстрируют применение современных практик backend-разработки.*  
-*Last updated: July 2026*
+*Проекты созданы в рамках обучения и самостоятельной практики и демонстрируют применяемые мной технологии и подходы к Backend-разработке.*
+
+*Last updated: September 2026*
