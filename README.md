@@ -229,6 +229,7 @@ cookbook-api/**
 |---|---|---:|
 | **Skillbox — Основы Python. Часть 1** | [№ SKB0469958](certificates/skillbox-python-part-1.png) | 10.02.2026 |
 | **Skillbox — Основы Python. Часть 2** | [№ SKB0487169](certificates/skillbox-python-part-2.png) | 02.05.2026 |
+| **Skillbox — Архитектор программного обеспечения** | [№ SKB0505176](certificates/skillbox-software-architect.png) | 22.09.2026 |
 | **GeekBrains / Skillbox Holding — Python-разработчик** | [№ 2835512](certificates/geekbrains-python-developer.pdf) | 17.06.2026 |
 
 Дополнительная информация находится в каталоге [`certificates`](./certificates/).
