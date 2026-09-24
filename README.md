@@ -141,21 +141,61 @@ Telegram-бот для поиска рецептов через внешний A
 
 ---
 
+### 6. 🔄 File Sync Service
+
+📁 [`file-sync-service`](./file-sync-service/)
+
+Сервис синхронизации локальной папки с Яндекс Диском через REST API.
+
+**Ключевые особенности:**
+
+- ✅ рекурсивный обход файлов и вложенных папок
+- ✅ загрузка новых и обновление изменённых файлов
+- ✅ удаление облачных файлов и папок, отсутствующих локально
+- ✅ периодическая синхронизация с настраиваемым интервалом
+- ✅ конфигурация через `.env`, логирование и обработка ошибок
+- ✅ разделение приложения, бизнес-логики и инфраструктуры
+
+**Стек:** Python, Requests, python-dotenv, Loguru, Яндекс Диск API
+
+---
+
+### 7. 🐦 Twitter Clone Backend
+
+🔗 [`twitter-clone-backend`](https://github.com/Sarmagon/twitter-clone-backend)
+
+Учебный backend корпоративного сервиса микроблогов — итоговый проект Python Advanced.
+
+**Ключевые особенности:**
+
+- ✅ REST API на FastAPI и авторизация по API-ключу
+- ✅ публикация и удаление твитов, лайки, подписки и лента
+- ✅ загрузка изображений с проверкой содержимого и прав доступа
+- ✅ PostgreSQL, SQLAlchemy и миграции Alembic
+- ✅ запуск через Docker Compose, Nginx и готовый интерфейс Vue
+- ✅ тесты API на pytest, проверки Ruff и Swagger / OpenAPI
+
+**Стек:** Python, FastAPI, SQLAlchemy, PostgreSQL, Alembic, Docker Compose, Nginx, pytest, Ruff
+
+---
+
 ## 🛠️ Технологический стек
 
 | Категория | Технологии |
 |---|---|
 | **Язык** | Python |
 | **Web / API** | FastAPI, Flask |
-| **Базы данных** | SQLite |
+| **Базы данных** | SQLite, PostgreSQL |
 | **ORM** | SQLAlchemy, Flask-SQLAlchemy, Peewee |
 | **Асинхронность** | Async SQLAlchemy, aiosqlite |
 | **Фоновые задачи** | Celery, Redis, Celery Beat |
 | **Тестирование** | pytest, TestClient, Factory Boy, Faker |
-| **Code Quality** | flake8, black, isort, mypy |
+| **Code Quality** | flake8, black, isort, mypy, Ruff |
 | **CI** | GitHub Actions |
 | **Telegram** | pyTelegramBotAPI |
-| **Внешние API** | REST API, TheMealDB |
+| **Внешние API** | REST API, TheMealDB, Яндекс Диск API |
+| **Миграции БД** | Alembic |
+| **Контейнеризация** | Docker, Docker Compose, Nginx |
 | **Архитектура** | ADR, NFR, архитектурные диаграммы, анализ рисков |
 | **Инструменты** | Git, GitHub, Linux, SSH, VS Code |
 
@@ -178,6 +218,9 @@ python-portfolio/
 ├── parking-api/
 │   └── README.md
 │
+├── file-sync-service/
+│   └── README.md
+│
 ├── image-processing-service/
 │   └── README.md
 │
@@ -189,6 +232,10 @@ python-portfolio/
 ```
 
 Каждый backend-проект содержит собственный README с описанием возможностей, архитектуры, структуры проекта и инструкциями по запуску.
+
+Проект **Twitter Clone Backend** расположен в отдельном репозитории:
+
+[`github.com/Sarmagon/twitter-clone-backend`](https://github.com/Sarmagon/twitter-clone-backend)
 
 Архитектурный проект **SportTogether** расположен в отдельном репозитории:
 
@@ -231,6 +278,7 @@ cookbook-api/**
 | **Skillbox — Основы Python. Часть 2** | [№ SKB0487169](certificates/skillbox-python-part-2.png) | 02.05.2026 |
 | **GeekBrains / Skillbox Holding — Python-разработчик** | [№ 2835512](certificates/geekbrains-python-developer.pdf) | 17.06.2026 |
 | **Skillbox — Архитектор программного обеспечения** | [№ SKB0505176](certificates/skillbox-software-architect.png) | 22.09.2026 |
+| **Skillbox — Python Advanced** | [№ SKB0506025](certificates/skillbox-python-advanced.png) | 24.09.2026 |
 
 
 Дополнительная информация находится в каталоге [`certificates`](./certificates/).
@@ -258,7 +306,8 @@ cookbook-api/**
 - FastAPI и Flask
 - SQLAlchemy и ORM
 - асинхронным Python
-- SQLite
+- SQLite и PostgreSQL
+- Docker и Docker Compose
 - pytest
 - Celery и Redis
 - GitHub Actions
@@ -296,8 +345,8 @@ cookbook-api/**
 - [x] основы проектирования архитектуры ПО
 - [x] ADR и NFR
 - [ ] Django
-- [ ] PostgreSQL
-- [ ] Docker
+- [x] PostgreSQL
+- [x] Docker
 - [ ] автоматическое развёртывание приложений
 - [ ] микросервисная архитектура
 - [ ] RabbitMQ

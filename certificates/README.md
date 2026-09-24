@@ -39,3 +39,13 @@
 - **Дата:** 22.09.2026
 
 [Открыть сертификат](./skillbox-software-architect.png)
+
+---
+
+### Skillbox — Python Advanced
+
+- **Курс:** Python Advanced
+- **Сертификат:** № SKB0506025
+- **Дата:** 24.09.2026
+
+[Открыть сертификат](./skillbox-python-advanced.png)
