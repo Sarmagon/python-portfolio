@@ -179,12 +179,31 @@ Telegram-бот для поиска рецептов через внешний A
 
 ---
 
+### 8. 📊 Django CRM
+
+🔗 [`django-crm`](https://github.com/Sarmagon/django-crm)
+
+Веб-приложение для учёта услуг, рекламных кампаний, потенциальных и активных клиентов, а также контрактов.
+
+**Ключевые особенности:**
+
+- ✅ авторизация на стандартных средствах Django
+- ✅ разделы услуг, рекламных кампаний, лидов, контрактов и активных клиентов
+- ✅ перевод лида в активного клиента
+- ✅ роли оператора, маркетолога и менеджера
+- ✅ статистика рекламных кампаний и отношение дохода по контрактам к рекламному бюджету
+- ✅ PostgreSQL и запуск через Docker Compose
+
+**Стек:** Python, Django, PostgreSQL, Docker Compose
+
+---
+
 ## 🛠️ Технологический стек
 
 | Категория | Технологии |
 |---|---|
 | **Язык** | Python |
-| **Web / API** | FastAPI, Flask |
+| **Web / API** | FastAPI, Flask, Django |
 | **Базы данных** | SQLite, PostgreSQL |
 | **ORM** | SQLAlchemy, Flask-SQLAlchemy, Peewee |
 | **Асинхронность** | Async SQLAlchemy, aiosqlite |
@@ -236,6 +255,10 @@ python-portfolio/
 Проект **Twitter Clone Backend** расположен в отдельном репозитории:
 
 [`github.com/Sarmagon/twitter-clone-backend`](https://github.com/Sarmagon/twitter-clone-backend)
+
+Проект **Django CRM** расположен в отдельном репозитории:
+
+[`github.com/Sarmagon/django-crm`](https://github.com/Sarmagon/django-crm)
 
 Архитектурный проект **SportTogether** расположен в отдельном репозитории:
 
