@@ -2,6 +2,7 @@
 
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-API-green.svg)](https://fastapi.tiangolo.com/)
+[![Django](https://img.shields.io/badge/Django-web-092E20.svg)](https://www.djangoproject.com/)
 [![Flask](https://img.shields.io/badge/Flask-REST_API-lightgrey.svg)](https://flask.palletsprojects.com/)
 [![Cookbook CI](https://github.com/Sarmagon/python-portfolio/actions/workflows/cookbook-ci.yml/badge.svg)](https://github.com/Sarmagon/python-portfolio/actions/workflows/cookbook-ci.yml)
 
@@ -13,7 +14,60 @@
 
 ## 🏆 Ключевые проекты
 
-### 1. 🍳 Cookbook API
+### 🤖 Habit Tracker — Telegram + FastAPI
+
+🔗 [habit-tracker-telegram-fastapi](https://github.com/Sarmagon/habit-tracker-telegram-fastapi)
+
+Трекер привычек с отдельным Telegram frontend и HTTP backend: создание и редактирование привычек, ежедневные отметки, история и напоминания с часовыми поясами IANA.
+
+- JWT, проверка внутреннего service secret по Argon2id-хешу и зашифрованное хранилище токенов бота.
+- PostgreSQL, SQLAlchemy, миграции Alembic, идемпотентные отметки и блокировки строк.
+- Poetry, Docker Compose, pytest и GitHub Actions: Ruff, тесты, миграции и отдельные проверки PostgreSQL.
+
+**Статус:** учебный проект для локального запуска; публичный production deployment не заявляется.
+**Стек:** Python 3.12, FastAPI, pyTelegramBotAPI, PostgreSQL, SQLAlchemy, Alembic, SQLite, Poetry, Docker Compose, pytest, Ruff.
+
+---
+
+### 🐦 Twitter Clone Backend
+
+🔗 [`twitter-clone-backend`](https://github.com/Sarmagon/twitter-clone-backend)
+
+Учебный backend корпоративного сервиса микроблогов — итоговый проект Python Advanced.
+
+**Ключевые особенности:**
+
+- ✅ REST API на FastAPI и авторизация по API-ключу
+- ✅ публикация и удаление твитов, лайки, подписки и лента
+- ✅ загрузка изображений с проверкой содержимого и прав доступа
+- ✅ PostgreSQL, SQLAlchemy и миграции Alembic
+- ✅ запуск через Docker Compose, Nginx и готовый интерфейс Vue
+- ✅ тесты API на pytest, проверки Ruff и Swagger / OpenAPI
+
+**Стек:** Python, FastAPI, SQLAlchemy, PostgreSQL, Alembic, Docker Compose, Nginx, pytest, Ruff
+
+---
+
+### 📊 Django CRM
+
+🔗 [`django-crm`](https://github.com/Sarmagon/django-crm)
+
+Веб-приложение для учёта услуг, рекламных кампаний, потенциальных и активных клиентов, а также контрактов.
+
+**Ключевые особенности:**
+
+- ✅ авторизация на стандартных средствах Django
+- ✅ разделы услуг, рекламных кампаний, лидов, контрактов и активных клиентов
+- ✅ перевод лида в активного клиента
+- ✅ роли оператора, маркетолога и менеджера
+- ✅ статистика рекламных кампаний и отношение дохода по контрактам к рекламному бюджету
+- ✅ PostgreSQL и запуск через Docker Compose
+
+**Стек:** Python, Django, PostgreSQL, Docker Compose
+
+---
+
+### 🍳 Cookbook API
 
 📁 [`cookbook-api`](./cookbook-api/)
 
@@ -39,57 +93,7 @@
 
 ---
 
-### 2. 🚗 Parking API
-
-📁 [`parking-api`](./parking-api/)
-
-REST API на Flask для управления клиентами, парковками и парковочными сессиями.
-
-**Ключевые особенности:**
-
-- ✅ Application Factory
-- ✅ Flask-SQLAlchemy
-- ✅ SQLAlchemy ORM
-- ✅ регистрация клиентов
-- ✅ создание парковочных зон
-- ✅ контроль свободных мест
-- ✅ регистрация заезда и выезда
-- ✅ проверка наличия банковской карты при выезде
-- ✅ фиксация времени парковочной сессии
-- ✅ интеграционные тесты на pytest
-- ✅ Factory Boy и Faker
-- ✅ изолированная SQLite-база для тестирования
-
-**Стек:** Flask, Flask-SQLAlchemy, SQLAlchemy, SQLite, pytest, Factory Boy, Faker
-
----
-
-### 3. 🤖 Recipe Telegram Bot
-
-📁 [`recipe-telegram-bot`](./recipe-telegram-bot/)
-
-Итоговый проект курса **«Основы Python»**.
-
-Telegram-бот для поиска рецептов через внешний API с поддержкой русского и английского языков и сохранением истории запросов.
-
-**Ключевые особенности:**
-
-- ✅ поиск рецептов по названию
-- ✅ поиск по ингредиентам
-- ✅ интеграция с TheMealDB API
-- ✅ поддержка RU / EN
-- ✅ FSM для управления состояниями пользователя
-- ✅ inline- и reply-клавиатуры
-- ✅ хранение истории запросов
-- ✅ Peewee ORM
-- ✅ SQLite
-- ✅ модульная структура проекта
-
-**Стек:** Python, pyTelegramBotAPI, Peewee ORM, SQLite, Requests, TheMealDB API
-
----
-
-### 4. 🖼️ Image Processing Service
+### 🖼️ Image Processing Service
 
 📁 [`image-processing-service`](./image-processing-service/)
 
@@ -112,7 +116,7 @@ Telegram-бот для поиска рецептов через внешний A
 
 ---
 
-### 5. 🏗️ SportTogether — архитектура программного обеспечения
+### 🏗️ SportTogether — архитектура программного обеспечения
 
 🔗 [`sport-together-architecture`](https://github.com/Sarmagon/sport-together-architecture)
 
@@ -141,7 +145,78 @@ Telegram-бот для поиска рецептов через внешний A
 
 ---
 
-### 6. 🔄 File Sync Service
+## Django diploma — на ревью
+
+Интернет-магазин Megano: каталог, отзывы, профиль, корзина, оформление заказов, доставка, история и учебная оплата через очередь в БД. Python, Django 5.2, SQLite, Poetry, Pillow; предоставленный учебный frontend адаптирован к backend.
+
+**Статус на 11.10.2026:** финальный этап отправлен на ревью, принятие диплома не подтверждено. Публичный репозиторий будет добавлен после завершения ревью и проверки возможности распространения учебных материалов. Это не интеграция с настоящим платёжным провайдером; Celery/Redis в очереди не используются.
+
+---
+
+## Дополнительные проекты
+
+### 🚢 Django Deployment Lab
+
+🔗 [skillbox-django-deploy](https://github.com/Sarmagon/skillbox-django-deploy)
+
+Учебная упаковка Django-приложения для запуска в Docker Compose и переноса на Linux VM через SSH. Зависимости фиксируются Poetry; миграции и сбор статики выполняются при запуске.
+
+**Стек:** Python 3.11, Django 4.2, Django REST Framework, SQLite, Poetry, Docker Compose.
+**Ограничения:** `runserver`, `DEBUG=1`, отсутствие TLS и постоянного тома SQLite. Это deployment practice; production deployment и доступность публичного сервера не заявляются.
+
+---
+
+### 🚗 Parking API
+
+📁 [`parking-api`](./parking-api/)
+
+REST API на Flask для управления клиентами, парковками и парковочными сессиями.
+
+**Ключевые особенности:**
+
+- ✅ Application Factory
+- ✅ Flask-SQLAlchemy
+- ✅ SQLAlchemy ORM
+- ✅ регистрация клиентов
+- ✅ создание парковочных зон
+- ✅ контроль свободных мест
+- ✅ регистрация заезда и выезда
+- ✅ проверка наличия банковской карты при выезде
+- ✅ фиксация времени парковочной сессии
+- ✅ интеграционные тесты на pytest
+- ✅ Factory Boy и Faker
+- ✅ изолированная SQLite-база для тестирования
+
+**Стек:** Flask, Flask-SQLAlchemy, SQLAlchemy, SQLite, pytest, Factory Boy, Faker
+
+---
+
+### 🤖 Recipe Telegram Bot
+
+📁 [`recipe-telegram-bot`](./recipe-telegram-bot/)
+
+Итоговый проект курса **«Основы Python»**.
+
+Telegram-бот для поиска рецептов через внешний API с поддержкой русского и английского языков и сохранением истории запросов.
+
+**Ключевые особенности:**
+
+- ✅ поиск рецептов по названию
+- ✅ поиск по ингредиентам
+- ✅ интеграция с TheMealDB API
+- ✅ поддержка RU / EN
+- ✅ FSM для управления состояниями пользователя
+- ✅ inline- и reply-клавиатуры
+- ✅ хранение истории запросов
+- ✅ Peewee ORM
+- ✅ SQLite
+- ✅ модульная структура проекта
+
+**Стек:** Python, pyTelegramBotAPI, Peewee ORM, SQLite, Requests, TheMealDB API
+
+---
+
+### 🔄 File Sync Service
 
 📁 [`file-sync-service`](./file-sync-service/)
 
@@ -160,44 +235,6 @@ Telegram-бот для поиска рецептов через внешний A
 
 ---
 
-### 7. 🐦 Twitter Clone Backend
-
-🔗 [`twitter-clone-backend`](https://github.com/Sarmagon/twitter-clone-backend)
-
-Учебный backend корпоративного сервиса микроблогов — итоговый проект Python Advanced.
-
-**Ключевые особенности:**
-
-- ✅ REST API на FastAPI и авторизация по API-ключу
-- ✅ публикация и удаление твитов, лайки, подписки и лента
-- ✅ загрузка изображений с проверкой содержимого и прав доступа
-- ✅ PostgreSQL, SQLAlchemy и миграции Alembic
-- ✅ запуск через Docker Compose, Nginx и готовый интерфейс Vue
-- ✅ тесты API на pytest, проверки Ruff и Swagger / OpenAPI
-
-**Стек:** Python, FastAPI, SQLAlchemy, PostgreSQL, Alembic, Docker Compose, Nginx, pytest, Ruff
-
----
-
-### 8. 📊 Django CRM
-
-🔗 [`django-crm`](https://github.com/Sarmagon/django-crm)
-
-Веб-приложение для учёта услуг, рекламных кампаний, потенциальных и активных клиентов, а также контрактов.
-
-**Ключевые особенности:**
-
-- ✅ авторизация на стандартных средствах Django
-- ✅ разделы услуг, рекламных кампаний, лидов, контрактов и активных клиентов
-- ✅ перевод лида в активного клиента
-- ✅ роли оператора, маркетолога и менеджера
-- ✅ статистика рекламных кампаний и отношение дохода по контрактам к рекламному бюджету
-- ✅ PostgreSQL и запуск через Docker Compose
-
-**Стек:** Python, Django, PostgreSQL, Docker Compose
-
----
-
 ## 🛠️ Технологический стек
 
 | Категория | Технологии |
@@ -205,7 +242,7 @@ Telegram-бот для поиска рецептов через внешний A
 | **Язык** | Python |
 | **Web / API** | FastAPI, Flask, Django |
 | **Базы данных** | SQLite, PostgreSQL |
-| **ORM** | SQLAlchemy, Flask-SQLAlchemy, Peewee |
+| **ORM** | Django ORM, SQLAlchemy, Flask-SQLAlchemy, Peewee |
 | **Асинхронность** | Async SQLAlchemy, aiosqlite |
 | **Фоновые задачи** | Celery, Redis, Celery Beat |
 | **Тестирование** | pytest, TestClient, Factory Boy, Faker |
@@ -213,9 +250,11 @@ Telegram-бот для поиска рецептов через внешний A
 | **CI** | GitHub Actions |
 | **Telegram** | pyTelegramBotAPI |
 | **Внешние API** | REST API, TheMealDB, Яндекс Диск API |
-| **Миграции БД** | Alembic |
+| **Миграции БД** | Django migrations, Alembic |
 | **Контейнеризация** | Docker, Docker Compose, Nginx |
 | **Архитектура** | ADR, NFR, архитектурные диаграммы, анализ рисков |
+| **Аутентификация** | Django auth/groups, JWT, Argon2id (Habit Tracker) |
+| **Зависимости** | Poetry, pip |
 | **Инструменты** | Git, GitHub, Linux, SSH, VS Code |
 
 ---
@@ -252,6 +291,8 @@ python-portfolio/
 
 Каждый backend-проект содержит собственный README с описанием возможностей, архитектуры, структуры проекта и инструкциями по запуску.
 
+Проекты **Habit Tracker** и **Django Deployment Lab** также расположены в отдельных репозиториях; ссылки приведены выше.
+
 Проект **Twitter Clone Backend** расположен в отдельном репозитории:
 
 [`github.com/Sarmagon/twitter-clone-backend`](https://github.com/Sarmagon/twitter-clone-backend)
@@ -267,6 +308,11 @@ python-portfolio/
 ---
 
 ## ⚙️ Continuous Integration
+
+Twitter Clone: [Backend checks](https://github.com/Sarmagon/twitter-clone-backend/actions/workflows/ci.yml) — pytest и Ruff.
+
+Habit Tracker проверяется в собственном [workflow](https://github.com/Sarmagon/habit-tracker-telegram-fastapi/actions/workflows/ci.yml). CI каждого проекта относится только к его коду: badge Cookbook не подтверждает проверки остальных каталогов. Автоматический deployment здесь не настроен.
+
 
 Для проекта **Cookbook API** настроен GitHub Actions workflow:
 
@@ -326,7 +372,7 @@ cookbook-api/**
 
 - Python
 - REST API
-- FastAPI и Flask
+- FastAPI, Django и Flask
 - SQLAlchemy и ORM
 - асинхронным Python
 - SQLite и PostgreSQL
@@ -367,7 +413,7 @@ cookbook-api/**
 - [x] Telegram Bot API
 - [x] основы проектирования архитектуры ПО
 - [x] ADR и NFR
-- [ ] Django
+- [x] Django
 - [x] PostgreSQL
 - [x] Docker
 - [ ] автоматическое развёртывание приложений
@@ -378,4 +424,4 @@ cookbook-api/**
 
 *Проекты созданы в рамках обучения и самостоятельной практики и демонстрируют практическое применение технологий Python Backend Development и проектирования программных систем.*
 
-*Last updated: September 2026*
+*Last updated: 11 October 2026*
