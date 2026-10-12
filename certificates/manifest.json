@@ -1,0 +1,51 @@
+[
+  {
+    "file": "skillbox-python-profession.png",
+    "course": "Профессия Python-разработчик — Индивидуальный Плюс, совместно с GeekBrains (615 академических часов)",
+    "number": "SKB0508141",
+    "date": "12.10.2026",
+    "sha256": "920602f1ae2fc25a50d566ffa1c2cc3786defa604c7114a92627696f414f5da8"
+  },
+  {
+    "file": "skillbox-django.png",
+    "course": "Python-фреймворк Django",
+    "number": "SKB0508141",
+    "date": "12.10.2026",
+    "sha256": "d4f6cb62a1e531d506962ad7c178bfbb7a34e3feabdd5e23845329031e2a70dd"
+  },
+  {
+    "file": "skillbox-python-advanced.png",
+    "course": "Python Advanced",
+    "number": "SKB0506025",
+    "date": "24.09.2026",
+    "sha256": "3de62fc8e2b0bfb5319e28d4ddcc90422ddbbdc25bd056fd5addd64ac05eb5d7"
+  },
+  {
+    "file": "skillbox-software-architect.png",
+    "course": "Архитектор программного обеспечения",
+    "number": "SKB0505176",
+    "date": "22.09.2026",
+    "sha256": "ead0027ed66c6cdafd01339cc3f35fd2542667b8f95f6da38ccddda228324de5"
+  },
+  {
+    "file": "geekbrains-python-developer.pdf",
+    "course": "GeekBrains / Skillbox Holding — Python-разработчик",
+    "number": "2835512",
+    "date": "17.06.2026",
+    "sha256": "ffdd641cce5030f424e3b3b7f966422ebca7a3a2c10f77a50b8fa974c76e2ca9"
+  },
+  {
+    "file": "skillbox-python-part-2.png",
+    "course": "Основы Python — часть 2",
+    "number": "SKB0487169",
+    "date": "02.05.2026",
+    "sha256": "7ec1bfaac7db4319b845b59b7e84881bb03a54dfbbe04ede2797d91d460371a1"
+  },
+  {
+    "file": "skillbox-python-part-1.png",
+    "course": "Основы Python — часть 1",
+    "number": "SKB0469958",
+    "date": "10.02.2026",
+    "sha256": "6c903ccfc15ba8f6fa12860fdfe592282e84f5a88feb361c4faf806147c2309b"
+  }
+]
