@@ -31,7 +31,7 @@
 
 [Исходный код](https://github.com/Sarmagon/twitter-clone-backend) · [CI](https://github.com/Sarmagon/twitter-clone-backend/actions/workflows/ci.yml)
 
-Итоговый проект Python Advanced: REST API микроблогов, API-ключи, твиты, лента, лайки, подписки и загрузка изображений. FastAPI, PostgreSQL, SQLAlchemy, Alembic, Docker Compose, Nginx. 40 тестов, покрытие 78%, Ruff. Предоставленный готовый frontend отделён от собственного backend; собственный код не скрыт из статистики языков.
+Итоговый проект Python Advanced: REST API микроблогов, API-ключи, твиты, лента, лайки, подписки и загрузка изображений. FastAPI, PostgreSQL, SQLAlchemy, Alembic, Docker Compose, Nginx. 40 тестов, покрытие 78%, Ruff. Интерфейс основан на предоставленном Vue-шаблоне; собственные изменения frontend сохранены в статистике языков.
 
 ### Habit Tracker — Telegram и FastAPI
 
@@ -43,7 +43,7 @@
 
 [Исходный код](https://github.com/Sarmagon/django-crm)
 
-Услуги, рекламные кампании, лиды, договоры, активные клиенты и статистика. Авторизация и роли оператора, маркетолога и менеджера, перевод лида в клиента. Django ORM, PostgreSQL, Docker Compose. Проверены 3 теста, системная проверка Django и миграции. Выход выполняется POST с CSRF. Pylint имеет замечания; зелёный CI не заявляется. Локальное учебное приложение.
+Услуги, рекламные кампании, лиды, договоры, активные клиенты и статистика. Авторизация и роли оператора, маркетолога и менеджера, перевод лида в клиента. Django ORM, PostgreSQL, Docker Compose. Проверены 3 теста, системная проверка Django и миграции. Выход выполняется POST с CSRF. CI проверяет существующие тесты на PostgreSQL, системную проверку и миграции. Pylint имеет замечания и проверяется отдельно. Локальное учебное приложение.
 
 ### SportTogether Architecture
 
@@ -55,8 +55,8 @@
 
 | Проект | Что демонстрирует |
 |---|---|
-| [Cookbook API](cookbook-api/) | Async FastAPI, SQLAlchemy, Pydantic, SQLite; 5 тестов и CI с проверками стиля и типов |
-| [Image Processing Service](image-processing-service/) | Flask, Celery, Redis, Pillow, ZIP, SMTP; smoke-проверки требуют запущенных сервисов и почты |
+| [Cookbook API](cookbook-api/) | Async FastAPI, SQLAlchemy, Pydantic, SQLite; 7 тестов и CI с проверками стиля и типов |
+| [Image Processing Service](image-processing-service/) | Flask, Celery, Redis, Pillow, ZIP, SMTP; 10 тестов с подменой SMTP; CI, проверка ошибок обработки и отправки |
 | [Django Deployment Lab](https://github.com/Sarmagon/skillbox-django-deploy) | Poetry, Docker Compose, Linux VM/SSH; 10 тестов. Runserver и DEBUG=1 — учебные ограничения |
 | [Parking API](parking-api/) | Flask, SQLAlchemy, парковочные сессии; 9 тестов |
 | [Recipe Telegram Bot](recipe-telegram-bot/) | Telegram Bot API, Peewee и работа с рецептами |

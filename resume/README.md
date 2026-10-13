@@ -83,6 +83,4 @@ Python, FastAPI, pyTelegramBotAPI, PostgreSQL, SQLAlchemy, Alembic, pytest, Poet
 
 Английский — A1. Интересуют REST API, интеграции, автоматизация и backend-системы. Направление развития — production-развёртывание и наблюдаемость.
 
-Обновлено 12 октября 2026 года.
-
 Обновлено 13 октября 2026 года.
