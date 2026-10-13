@@ -1,303 +1,82 @@
-# 🖼️ Image Processing Service — Celery + Redis
+# Image Processing Service
 
-Сервис асинхронной обработки изображений на Flask.
+[![Image Processing CI](https://github.com/Sarmagon/python-portfolio/actions/workflows/image-service-ci.yml/badge.svg)](https://github.com/Sarmagon/python-portfolio/actions/workflows/image-service-ci.yml)
 
-Пользователь загружает одно или несколько изображений и указывает email. Изображения ставятся в очередь Celery, обрабатываются в фоне, объединяются в ZIP-архив и отправляются пользователю по электронной почте.
+Учебный HTTP-сервис: загрузка изображений, размытие в фоне, ZIP-архив и отправка по SMTP. Дополнительно — подписка и еженедельная рассылка.
 
-Дополнительно реализована подписка на еженедельную email-рассылку.
+**Стек:** Python 3.12, Flask, Celery, Redis broker/result backend, Pillow, SQLite + SQLAlchemy, Celery Beat, Flower, SMTP.
 
----
-
-## 🚀 Возможности
-
-- ✅ Асинхронная обработка изображений через Celery
-- ✅ Redis как broker и result backend
-- ✅ Параллельная обработка нескольких изображений через Celery Group
-- ✅ Отслеживание прогресса выполнения задач
-- ✅ Создание ZIP-архива с обработанными изображениями
-- ✅ Отправка результата пользователю по email
-- ✅ Подписка и отписка от рассылки
-- ✅ Celery Beat для периодических задач
-- ✅ Flower для мониторинга Celery
-- ✅ SQLite + SQLAlchemy для хранения подписчиков
-- ✅ Автоматический smoke-test основных API endpoint
-
----
-
-## 🛠️ Стек
-
-- Python
-- Flask
-- Celery
-- Redis
-- Celery Beat
-- Flower
-- SQLAlchemy
-- SQLite
-- Pillow
-- SMTP
-- Requests
-
----
-
-## 🏗️ Как работает сервис
+## Архитектура
 
 ```text
-Клиент
-  │
-  │ POST /blur
-  ▼
-Flask API
-  │
-  ├── сохраняет изображения
-  │
-  └── создаёт группу Celery-задач
-              │
-              ▼
-         Redis Broker
-              │
-              ▼
-        Celery Worker
-              │
-              ├── обработка изображений
-              ├── создание ZIP
-              └── отправка результата по email
+POST /blur → проверка/сохранение изображений → Celery chord
+  → параллельные blur_task → process_order → полный ZIP → SMTP
+GET /status/<group_id> → результаты обработки и итоговой задачи
+Celery Beat → send_weekly_newsletter → активные подписчики SQLite
 ```
 
-Отдельно Celery Beat запускает периодическую задачу еженедельной рассылки активным подписчикам.
+ZIP и письмо создаются callback-задачей после успешной обработки всех файлов. Ошибка изображения или SMTP даёт `failed`; готовность отдельного изображения не означает завершение заказа.
 
----
+## Запуск локально
 
-## 📡 API
+Запускайте worker в Linux/WSL: Celery не поддерживает обычный Windows worker. Нужны Redis и SMTP-аккаунт, настроенный для отправки. API и worker должны видеть одни и те же файлы.
+
+```sh
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+cp .env.example .env
+# Заполните SMTP-параметры; не публикуйте .env.
+docker run --rm -p 127.0.0.1:6379:6379 redis:7-alpine
+```
+
+В отдельных терминалах с активированным окружением, из каталога проекта:
+
+```sh
+flask --app app run --host 127.0.0.1 --port 5000
+celery -A celery_app.celery_app worker --loglevel=info
+# Необязательно: рассылка и мониторинг
+celery -A celery_app.celery_app beat --loglevel=info
+celery -A celery_app.celery_app flower
+```
+
+`IMAGE_SERVICE_DATA_DIR` задаёт каталог `uploads`, `results`, `orders`; одинаковый абсолютный путь обязателен для API и worker. `CELERY_BROKER_URL`, `CELERY_RESULT_BACKEND`, `SUBSCRIBERS_DATABASE_URL` и SMTP-параметры описаны в `.env.example`. По умолчанию Redis использует базы 0 и 1, подписчики — `subscribers.db`.
+
+## API
 
 | Метод | Endpoint | Назначение |
 |---|---|---|
-| `POST` | `/blur` | Загружает изображения и ставит их в очередь на обработку |
-| `GET` | `/status/<group_id>` | Возвращает статус и прогресс группы задач |
-| `POST` | `/subscribe` | Подписывает email на рассылку |
-| `POST` | `/unsubscribe` | Отключает подписку |
+| POST | `/blur` | Multipart: `email`, 1–10 полей `images`; ответ `202`, `group_id` |
+| GET | `/status/<group_id>` | `processing`, `finalizing`, `completed` или `failed`; прогресс успешных/ошибочных изображений |
+| POST | `/subscribe` | JSON/form `email`, подписка |
+| POST | `/unsubscribe` | JSON/form `email`, отписка |
 
----
-
-## 📤 POST /blur
-
-Принимает:
-
-- `email` — email пользователя
-- `images` — одно или несколько изображений
-
-Пример:
-
-```bash
-curl -X POST http://127.0.0.1:5000/blur \
-  -F "email=test@example.com" \
-  -F "images=@test1.jpg" \
-  -F "images=@test2.jpg"
+```sh
+curl -F "email=your-address@example.com" -F "images=@image.png" http://127.0.0.1:5000/blur
+curl http://127.0.0.1:5000/status/UUID_ИЗ_ОТВЕТА
 ```
 
-Пример ответа:
+Лимит запроса — 20 MiB. PNG/JPEG/WEBP проверяются по реальному содержимому и пересохраняются как PNG со случайными именами. Имена клиента не используются как пути, одинаковые имена не перезаписывают друг друга. Некорректные файлы — `400`, превышение размера — `413`, неизвестный заказ — `404`, недоступная очередь/статус — `503`.
 
-```json
-{
-  "group_id": "task-group-id",
-  "total_images": 2,
-  "message": "Задачи поставлены в очередь"
-}
+## Проверки
+
+```sh
+python -m pip install -r requirements-dev.txt
+python -m pytest -q
 ```
 
----
+10 тестов проверяют полный workflow, ZIP с двумя одинаковыми исходными именами, ошибку SMTP, неполные результаты, ошибочный прогресс, входные данные и подписку. Celery выполняется в eager-режиме с memory backend, SMTP подменён; рабочая база не затрагивается. CI запускает эти тесты и три отдельных сценария с настоящим Redis и solo worker: успех, ошибка SMTP и ошибка изображения. Внешняя доставка письма не проверяется; SMTP во всех автоматических проверках подменён.
 
-## 📊 GET /status/<group_id>
+`test_api.py` — отдельный ручной smoke-сценарий; требует запущенных сервисов и может отправить настоящее письмо. Он не входит в автоматические тесты.
 
-Позволяет проверить состояние обработки изображений.
+## Ограничения и безопасность
 
-```bash
-curl http://127.0.0.1:5000/status/<group_id>
+Локальный учебный сервис без аутентификации и подтверждения владения email. Не размещать открыто: нет rate limiting, политики удаления старых заказов и защиты рассылки от злоупотребления. API и worker требуют общего диска; очередь не является транзакционной с локальным manifest. `completed` означает успешное принятие письма SMTP-сервером, не доставку адресату. Повторное автоматическое письмо после неоднозначной ошибки SMTP не предусмотрено.
+
+Файлы, subscriber DB и `.env` исключены из Git. Redis и Flower должны быть доступны только в доверенном окружении. Для production нужны контроль доступа, хранение заданий в БД, резервные копии, cleanup и проверка доставки.
+
+Интеграционную проверку запускайте только с отдельным Redis, например на порту 16379, и без настоящих SMTP credentials:
+
+```sh
+IMAGE_TEST_REDIS_URL=redis://127.0.0.1:16379 python tests/redis_workflow_check.py
 ```
-
-Пример ответа:
-
-```json
-{
-  "group_id": "task-group-id",
-  "status": "processing",
-  "progress": {
-    "completed": 1,
-    "total": 2
-  }
-}
-```
-
-После завершения всех задач статус изменяется на:
-
-```text
-completed
-```
-
----
-
-## ✉️ Подписка на рассылку
-
-### Подписаться
-
-```bash
-curl -X POST http://127.0.0.1:5000/subscribe \
-  -F "email=test@example.com"
-```
-
-### Отписаться
-
-```bash
-curl -X POST http://127.0.0.1:5000/unsubscribe \
-  -F "email=test@example.com"
-```
-
-Активные подписчики хранятся в SQLite.
-
-Celery Beat запускает еженедельную рассылку:
-
-```text
-Понедельник — 09:00
-```
-
----
-
-## ⚙️ Установка
-
-### 1. Установить зависимости
-
-```bash
-pip install -r requirements.txt
-```
-
-### 2. Настроить SMTP
-
-Создайте `.env`:
-
-```env
-SMTP_USER=your_email@yandex.ru
-SMTP_PASSWORD=your_app_password
-SMTP_HOST=smtp.yandex.ru
-SMTP_PORT=587
-```
-
-Не добавляйте `.env` с реальными учётными данными в Git.
-
----
-
-## ▶️ Запуск
-
-Для полной работы сервиса необходимо запустить несколько процессов.
-
-### Redis
-
-```bash
-redis-server
-```
-
-### Celery Worker
-
-```bash
-celery -A celery_app worker --loglevel=info --pool=solo
-```
-
-### Celery Beat
-
-```bash
-celery -A celery_app beat --loglevel=info
-```
-
-### Flower
-
-```bash
-celery -A celery_app flower --port=5555
-```
-
-### Flask API
-
-```bash
-python app.py
-```
-
-После запуска API доступен по адресу:
-
-```text
-http://127.0.0.1:5000
-```
-
-Flower:
-
-```text
-http://127.0.0.1:5555
-```
-
----
-
-## 🧪 Проверка API
-
-В проект добавлен smoke-test основных endpoint:
-
-```bash
-python test_api.py
-```
-
-Он проверяет:
-
-- `POST /blur`
-- `GET /status/<group_id>`
-- `POST /subscribe`
-- `POST /unsubscribe`
-
-При успешном выполнении:
-
-```text
-✅ POST /blur — OK
-✅ GET /status — completed
-✅ POST /subscribe — OK
-✅ POST /unsubscribe — OK
-
-🎉 Все тесты пройдены!
-```
-
----
-
-## 📂 Структура проекта
-
-```text
-image-processing-service/
-├── app.py             # Flask API
-├── celery_app.py      # конфигурация Celery и Celery Beat
-├── tasks.py           # фоновые Celery-задачи
-├── image.py           # обработка изображений
-├── mail.py            # отправка email
-├── subscribers.py     # модель и работа с подписчиками
-├── config.py          # конфигурация
-├── test_api.py        # smoke-test API
-├── test1.jpg          # тестовое изображение
-├── test2.jpg          # тестовое изображение
-└── requirements.txt   # зависимости
-```
-
----
-
-## 🎯 Что демонстрирует проект
-
-Проект показывает практическую работу с:
-
-- очередями фоновых задач;
-- асинхронной обработкой длительных операций;
-- message broker;
-- периодическими задачами;
-- мониторингом Celery;
-- REST API;
-- ORM и базой данных;
-- интеграцией с SMTP;
-- обработкой файлов.
-
----
-
-Проект выполнен в рамках обучения Python-разработке и доработан как демонстрационный backend-проект для портфолио.
-
-## Настройки SMTP
-
-Скопируйте `.env.example` в `.env` и задайте свои SMTP-настройки. Образец содержит только placeholders; `.env` игнорируется Git. `test_api.py` — smoke-сценарий против запущенного Flask/Celery/Redis, который может отправлять email; это не автономный CI-тест. При аудите портфолио внешний SMTP и этот сценарий не запускались.

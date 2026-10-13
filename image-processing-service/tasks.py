@@ -1,7 +1,6 @@
 import os
 import zipfile
 from celery_app import celery_app
-from celery import group
 from image import blur_image
 from mail import send_email, send_plain_email
 from subscribers import get_subscribers
@@ -15,40 +14,19 @@ def blur_task(image_path: str, order_id: str, output_dir: str):
     return dst_filename
 
 @celery_app.task
-def process_order(image_paths: list, order_id: str, email: str):
-    """
-    Создаёт ZIP-архив с размытыми изображениями и отправляет email.
-    """
-    output_dir = f'results/{order_id}'
-    zip_path = f'{output_dir}/blurred_images.zip'
-    
-    # Ждём, пока все файлы будут созданы (простая проверка)
-    import time
-    max_wait = 30  # секунд
-    waited = 0
-    
-    while waited < max_wait:
-        blurred_files = [
-            f'{output_dir}/blur_{os.path.basename(path)}'
-            for path in image_paths
-        ]
-        
-        # Проверяем, все ли файлы существуют
-        if all(os.path.exists(f) for f in blurred_files):
-            break
-        
-        time.sleep(1)
-        waited += 1
-    
-    # Создаём ZIP-архив
-    with zipfile.ZipFile(zip_path, 'w') as zipf:
+def process_order(blurred_files: list, order_id: str, email: str):
+    """Chord callback: invoked only after every blur task succeeds."""
+    if not blurred_files or not all(os.path.isfile(p) for p in blurred_files):
+        raise ValueError("Incomplete image results; no archive or email created")
+    output_dir = os.path.dirname(blurred_files[0])
+    if any(os.path.dirname(p) != output_dir for p in blurred_files):
+        raise ValueError("Image results belong to different orders")
+    zip_path = os.path.join(output_dir, 'blurred_images.zip')
+    with zipfile.ZipFile(zip_path, 'w', compression=zipfile.ZIP_DEFLATED) as zipf:
         for blurred_file in blurred_files:
-            if os.path.exists(blurred_file):
-                zipf.write(blurred_file, os.path.basename(blurred_file))
-    
-    # Отправляем email
+            zipf.write(blurred_file, os.path.basename(blurred_file))
+    # SMTP errors propagate to the task result; a ZIP alone is not completion.
     send_email(order_id, email, zip_path)
-    
     return zip_path
 
 @celery_app.task

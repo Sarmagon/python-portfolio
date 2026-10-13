@@ -6,7 +6,7 @@ from email.mime.text import MIMEText
 from config import SMTP_HOST, SMTP_PORT, SMTP_PASSWORD, SMTP_USER
 
 def send_email(order_id: str, receiver: str, filename: str):
-    with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+    with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=30) as server:
         server.starttls()
         server.login(SMTP_USER, SMTP_PASSWORD)
         email = MIMEMultipart()
@@ -22,7 +22,7 @@ def send_email(order_id: str, receiver: str, filename: str):
         server.sendmail(SMTP_USER, receiver, email.as_string())
 
 def send_plain_email(receiver: str, subject: str, body: str):
-    with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
+    with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=30) as server:
         server.starttls()
         server.login(SMTP_USER, SMTP_PASSWORD)
         msg = MIMEMultipart()

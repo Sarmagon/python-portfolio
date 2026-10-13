@@ -46,3 +46,4 @@ results/
 uploads/
 orders/
 test_images/
+.pytest_cache/

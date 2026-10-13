@@ -1,109 +1,111 @@
+import json
 import os
+import re
+import shutil
 import uuid
-from flask import Flask, request, jsonify
-from celery import group
-from celery.result import GroupResult
+import warnings
+from pathlib import Path
+
+from celery import chord
+from flask import Flask, jsonify, request
+from PIL import Image, UnidentifiedImageError
+
 from celery_app import celery_app
-from tasks import blur_task, process_order
 from subscribers import Session, Subscriber
+from tasks import blur_task, process_order
 
 app = Flask(__name__)
+app.json.ensure_ascii = False
+app.config.update(MAX_CONTENT_LENGTH=20 * 1024 * 1024,
+                  DATA_DIR=os.getenv('IMAGE_SERVICE_DATA_DIR', '.'))
+EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 
-# Настройка кодировки JSON для поддержки кириллицы
-app.config['JSON_AS_ASCII'] = False  # Для старых версий Flask (< 2.2)
-try:
-    app.json.ensure_ascii = False  # Для новых версий Flask (>= 2.2)
-except AttributeError:
-    pass
+
+@app.errorhandler(413)
+def too_large(error):
+    return jsonify({'error': 'Лимит запроса: 20 MiB'}), 413
 
 
 @app.route('/blur', methods=['POST'])
 def blur():
-    """
-    Ставит в очередь обработку изображений.
-    Принимает файлы и email пользователя.
-    Возвращает ID группы задач.
-    """
-    email = request.form.get('email')
-    if not email:
-        return jsonify({'error': 'Email обязателен'}), 400
-
+    email = request.form.get('email', '').strip()
+    if len(email) > 254 or not EMAIL_RE.fullmatch(email):
+        return jsonify({'error': 'Укажите корректный email'}), 400
     files = request.files.getlist('images')
-    if not files:
-        return jsonify({'error': 'Хотя бы одно изображение обязательно'}), 400
+    if not 1 <= len(files) <= 10 or any(not f.filename for f in files):
+        return jsonify({'error': 'Требуется от 1 до 10 изображений'}), 400
 
     order_id = str(uuid.uuid4())
-    upload_dir = f'uploads/{order_id}'
-    os.makedirs(upload_dir, exist_ok=True)
+    data_dir = Path(app.config['DATA_DIR']).resolve()
+    upload_dir = data_dir / 'uploads' / order_id
+    output_dir = data_dir / 'results' / order_id
+    upload_dir.mkdir(parents=True)
+    paths = []
+    try:
+        for file in files:
+            # Never use client filenames as filesystem paths. Decode actual images
+            # and re-encode as PNG; duplicate names stay distinct.
+            with warnings.catch_warnings():
+                warnings.simplefilter('error', Image.DecompressionBombWarning)
+                with Image.open(file.stream) as image:
+                    if image.format not in {'PNG', 'JPEG', 'WEBP'}:
+                        raise ValueError('Unsupported image format')
+                    image.load()
+                    destination = upload_dir / f'{uuid.uuid4().hex}.png'
+                    image.convert('RGBA').save(destination, format='PNG')
+                    paths.append(str(destination))
+    except (UnidentifiedImageError, OSError, ValueError,
+            Image.DecompressionBombError, Image.DecompressionBombWarning):
+        shutil.rmtree(upload_dir)
+        return jsonify({'error': 'Допустимы корректные PNG, JPEG или WEBP'}), 400
 
-    image_paths = []
-    for file in files:
-        if file and file.filename:
-            filepath = os.path.join(upload_dir, file.filename)
-            file.save(filepath)
-            image_paths.append(filepath)
-
-    if not image_paths:
-        return jsonify({'error': 'Не удалось сохранить файлы'}), 400
-
-    output_dir = f'results/{order_id}'
-    
-    # Создаём группу задач для параллельной обработки
-    blur_jobs = group(
-        blur_task.s(path, order_id, output_dir)
-        for path in image_paths
-    )
-    
-    # Запускаем задачи размытия
-    result = blur_jobs.apply_async()
-    result.save()
-    
-    # Запускаем задачу создания ZIP и отправки email
-    process_order.delay(image_paths, order_id, email)
-    
-    os.makedirs('orders', exist_ok=True)
-    with open(f'orders/{result.id}', 'w') as f:
-        f.write(f'{email}\n{len(image_paths)}')
-
-    return jsonify({
-        'group_id': result.id,
-        'total_images': len(image_paths),
-        'message': 'Задачи поставлены в очередь'
-    }), 202
+    task_ids = [str(uuid.uuid4()) for _ in paths]
+    result_id = str(uuid.uuid4())
+    header = [blur_task.s(path, order_id, str(output_dir)).set(task_id=task_id)
+              for path, task_id in zip(paths, task_ids)]
+    body = process_order.s(order_id, email).set(task_id=result_id)
+    orders = data_dir / 'orders'
+    orders.mkdir(exist_ok=True)
+    (orders / f'{result_id}.json').write_text(
+        json.dumps({'task_ids': task_ids, 'result_id': result_id}), encoding='utf-8')
+    try:
+        chord(header, body).apply_async()
+    except Exception:
+        app.logger.exception('Unable to enqueue order %s', order_id)
+        return jsonify({'error': 'Очередь недоступна', 'group_id': result_id}), 503
+    return jsonify({'group_id': result_id, 'total_images': len(paths),
+                    'message': 'Задачи поставлены в очередь'}), 202
 
 
 @app.route('/status/<group_id>', methods=['GET'])
 def status(group_id):
-    """
-    Возвращает информацию о задаче:
-    - прогресс (количество обработанных)
-    - статус (в процессе / обработано)
-    """
     try:
-        result = GroupResult.restore(group_id, app=celery_app)
-        
-        if result is None:
-            return jsonify({'error': 'Задача не найдена'}), 404
-
-        total = len(result)
-        completed = sum(1 for r in result.results if r.ready())
-        
-        if completed == total:
-            task_status = 'completed'
+        uuid.UUID(group_id)
+    except ValueError:
+        return jsonify({'error': 'Задача не найдена'}), 404
+    manifest = Path(app.config['DATA_DIR']).resolve() / 'orders' / f'{group_id}.json'
+    if not manifest.is_file():
+        return jsonify({'error': 'Задача не найдена'}), 404
+    try:
+        job = json.loads(manifest.read_text(encoding='utf-8'))
+        images = [celery_app.AsyncResult(task_id) for task_id in job['task_ids']]
+        delivery = celery_app.AsyncResult(job['result_id'])
+        completed = sum(result.successful() for result in images)
+        failed = sum(result.failed() for result in images)
+        if failed or delivery.failed():
+            state = 'failed'
+        elif delivery.successful():
+            state = 'completed'
+        elif completed == len(images):
+            state = 'finalizing'
         else:
-            task_status = 'processing'
-
-        return jsonify({
-            'group_id': group_id,
-            'status': task_status,
-            'progress': {
-                'completed': completed,
-                'total': total
-            }
-        }), 200
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+            state = 'processing'
+        return jsonify({'group_id': group_id, 'status': state,
+                        'progress': {'completed': completed, 'failed': failed,
+                                     'total': len(images)}})
+    except Exception:
+        app.logger.exception('Unable to read job status')
+        return jsonify({'error': 'Статус временно недоступен'}), 503
 
 
 @app.route('/subscribe', methods=['POST'])
@@ -168,4 +170,4 @@ def unsubscribe():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

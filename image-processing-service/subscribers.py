@@ -1,8 +1,9 @@
+import os
 from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 # Настройка базы данных SQLite для подписчиков
-engine = create_engine('sqlite:///subscribers.db')
+engine = create_engine(os.getenv('SUBSCRIBERS_DATABASE_URL', 'sqlite:///subscribers.db'))
 Base = declarative_base()
 
 
