@@ -37,10 +37,10 @@ async def lifespan(app: FastAPI):
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-    yield
-
-    # Код здесь выполняется ПРИ ОСТАНОВКЕ (shutdown)
-    await engine.dispose()
+    try:
+        yield
+    finally:
+        await engine.dispose()
 
 
 # Инициализация FastAPI приложения с полной документацией
@@ -95,8 +95,8 @@ async def create_recipe(
     Returns:
         Созданный рецепт с присвоенным ID и начальным значением views=0
     """
-    # Извлекаем данные из Pydantic модели (V1 синтаксис)
-    data = recipe.dict()
+    # Извлекаем данные из Pydantic модели
+    data = recipe.model_dump()
     ingredients_data = data.pop("ingredients", [])
 
     # Создаём объект рецепта

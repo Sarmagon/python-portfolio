@@ -1,37 +1,51 @@
 """
 Тесты для Cookbook API.
-Использует pytest фикстуры для гарантированного создания таблиц перед тестами.
+Каждый тест запускает приложение на новой временной базе через lifespan.
 """
 
-import asyncio
+from types import SimpleNamespace
+from unittest.mock import AsyncMock
 
 import pytest
 from fastapi.testclient import TestClient
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
 
-import models
-from database import engine
-from main import app
-
-
-# Эта фикстура запускается ОДИН раз перед всеми тестами в файле
-# и гарантированно создаёт таблицы в базе данных
-@pytest.fixture(scope="module", autouse=True)
-def setup_database():
-    async def create_tables():
-        async with engine.begin() as conn:
-            await conn.run_sync(models.Base.metadata.create_all)
-
-    # Запускаем асинхронную функцию в синхронном контексте pytest
-    asyncio.run(create_tables())
-    yield
+import database
+import main
 
 
-# Создаём клиент один раз на весь модуль тестов,
-# чтобы не закрывать engine и session между отдельными тестами
-client = TestClient(app)
+@pytest.fixture
+def client(tmp_path, monkeypatch):
+    # Application startup, rather than the fixture, must create the tables.
+    test_engine = create_async_engine(f"sqlite+aiosqlite:///{tmp_path / 'test.db'}")
+    monkeypatch.setattr(main, "engine", test_engine)
+    monkeypatch.setattr(
+        database,
+        "async_session",
+        sessionmaker(test_engine, expire_on_commit=False, class_=AsyncSession),
+    )
+    with TestClient(main.app) as test_client:
+        yield test_client
 
 
-def test_create_recipe():
+def test_fresh_database_startup(client):
+    response = client.get("/recipes")
+    assert response.status_code == 200
+    assert response.json() == []
+
+
+def test_engine_disposed_on_shutdown(client, monkeypatch):
+    dispose = AsyncMock(wraps=main.engine.dispose)
+    monkeypatch.setattr(
+        main, "engine", SimpleNamespace(begin=main.engine.begin, dispose=dispose)
+    )
+    with TestClient(main.app):
+        pass
+    dispose.assert_awaited_once()
+
+
+def test_create_recipe(client):
     """Тест создания рецепта с ингредиентами."""
     response = client.post(
         "/recipes",
@@ -49,7 +63,7 @@ def test_create_recipe():
     assert len(data["ingredients"]) == 1
 
 
-def test_get_recipes_sorted():
+def test_get_recipes_sorted(client):
     """Тест сортировки: при равных просмотрах сначала идёт рецепт с меньшим временем."""
     client.post("/recipes", json={"title": "Долгий рецепт", "cook_time": 100})
     client.post("/recipes", json={"title": "Быстрый рецепт", "cook_time": 10})
@@ -65,7 +79,7 @@ def test_get_recipes_sorted():
     assert titles.index("Быстрый рецепт") < titles.index("Долгий рецепт")
 
 
-def test_views_increment():
+def test_views_increment(client):
     """Тест увеличения счётчика просмотров."""
     create_resp = client.post(
         "/recipes", json={"title": "Тест на просмотры", "cook_time": 30}
@@ -82,14 +96,14 @@ def test_views_increment():
     assert response.json()["views"] == 3
 
 
-def test_get_recipe_not_found():
+def test_get_recipe_not_found(client):
     """Тест обработки ошибки 404."""
     response = client.get("/recipes/99999")
     assert response.status_code == 404
     assert response.json()["detail"] == "Рецепт с id=99999 не найден"
 
 
-def test_create_recipe_without_ingredients():
+def test_create_recipe_without_ingredients(client):
     """Тест создания рецепта без ингредиентов (допустимый случай)."""
     response = client.post(
         "/recipes",

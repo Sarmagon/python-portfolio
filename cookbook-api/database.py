@@ -8,13 +8,15 @@
 - Dependency Injection для создания сессий (рекомендация FastAPI)
 """
 
+import os
+
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 # URL подключения к асинхронной SQLite базе данных
 # Формат: sqlite+aiosqlite:///./<имя_файла>.db
-DATABASE_URL = "sqlite+aiosqlite:///./cookbook.db"
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./cookbook.db")
 
 # Создание асинхронного движка (engine) для работы с БД
 # echo=False — не выводить SQL-запросы в консоль (для продакшена)

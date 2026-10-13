@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 # ===== Схемы для ингредиента =====
 
@@ -27,8 +27,7 @@ class IngredientOut(IngredientBase):
 
     id: int
 
-    class Config:
-        orm_mode = True  # Позволяет работать с ORM-объектами SQLAlchemy
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ===== Схемы для рецепта =====
@@ -67,8 +66,7 @@ class RecipeOut(RecipeBase):
     )
     ingredients: List[IngredientOut] = Field(default_factory=list)
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class RecipeListItem(BaseModel):
@@ -79,5 +77,4 @@ class RecipeListItem(BaseModel):
     cook_time: int = Field(..., title="Время готовки (мин)")
     views: int = Field(..., title="Количество просмотров")
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
