@@ -2,7 +2,7 @@
 
 **Junior Python Backend Developer** · Москва
 
-[Скачать резюме PDF](stanislav-smirnov-python-backend.pdf)
+Актуальная текстовая версия — ниже. [Предыдущая версия PDF от 12.10.2026](stanislav-smirnov-python-backend.pdf).
 
 [GitHub](https://github.com/Sarmagon) · [Telegram @Sarmagon](https://t.me/Sarmagon) · [stasus.sv@mail.ru](mailto:stasus.sv@mail.ru)
 
@@ -20,41 +20,42 @@
 | Интеграции и доступ | Telegram Bot API, HTTP API, SMTP; JWT, Django auth/groups, API-ключи |
 | Проверки | pytest, unittest, Ruff; flake8, black, isort, mypy в Cookbook; GitHub Actions |
 | Запуск | Docker, Docker Compose, Nginx, Poetry, pip, Linux, SSH, Git |
+| Мониторинг и медиа | Prometheus, Grafana, node-exporter, SeaweedFS; Sentry — подготовленная интеграция |
 | Архитектура | ADR, NFR, анализ рисков, компромиссов и стоимости владения |
 
 ## Проекты
 
-### Habit Tracker — Telegram и FastAPI
+### Megano — интернет-магазин на Django
 
-[Исходный код](https://github.com/Sarmagon/habit-tracker-telegram-fastapi) · [CI](https://github.com/Sarmagon/habit-tracker-telegram-fastapi/actions/workflows/ci.yml)
+Итоговый проект курса «Python-фреймворк Django», Skillbox. Регистрация, профиль с аватаром, каталог, корзина, оформление и история заказов. Очередь учебной оплаты в базе данных с отдельным worker. Медиа в SeaweedFS с проверкой целостности при переносе; мониторинг Prometheus, Grafana и node-exporter. Подготовлена интеграция Sentry. В итоговой версии в Ubuntu прошли 66 тестов.
 
-Привычки, ежедневные отметки, история и напоминания с часовыми поясами IANA. Отдельные Telegram frontend и HTTP backend; JWT, Argon2id для service secret, шифрование токенов бота, идемпотентные отметки. PostgreSQL, SQLAlchemy, Alembic, Poetry, Docker Compose. Проверены 47 тестов и отдельный тест PostgreSQL, Ruff и миграции. Учебный проект; публичное production-развёртывание не заявляется.
+Python, Django 5.2, SQLite, Poetry, Docker Compose, SeaweedFS, Prometheus, Grafana. Предоставленный учебный frontend; платёжный сервис учебный.
+
+[Исходный код на GitLab](https://gitlab.skillbox.ru/stanislav_smirnov_2/python_django_diploma/-/tree/master)
 
 ### Twitter Clone Backend
 
-[Исходный код](https://github.com/Sarmagon/twitter-clone-backend) · [CI](https://github.com/Sarmagon/twitter-clone-backend/actions/workflows/ci.yml)
+Итоговый проект курса Python Advanced, Skillbox. REST API публикаций, ленты, лайков, подписок и профилей. Проверки прав владельца, валидация изображений, транзакции, миграции и CI с API-тестами и Ruff. Предоставленный интерфейс Vue.
 
-Итоговый проект Python Advanced: REST API микроблогов, API-ключи, твиты, лента, лайки, подписки и загрузка изображений. FastAPI, PostgreSQL, SQLAlchemy, Alembic, Docker Compose, Nginx. 40 тестов, покрытие 78%, Ruff. Предоставленный готовый frontend отделён от собственного backend; собственный код не скрыт из статистики языков.
+Python, FastAPI, PostgreSQL, SQLAlchemy, Alembic, pytest, Docker Compose, Nginx.
 
-### Django Marketplace — Megano
+[Исходный код](https://github.com/Sarmagon/twitter-clone-backend)
 
-Принятый итоговый проект Django. Каталог, предложения продавцов, отзывы, профиль, корзина, оформление заказа, доставка, история и учебная оплата. Серверный расчёт суммы, транзакционное резервирование остатков, ключ идемпотентности checkout, очередь PaymentJob в БД с повторными попытками и lease. Django 5.2, SQLite, Poetry, Pillow; 58 тестов прошли.
+### Habit Tracker — Telegram-бот и API
 
-**Подтверждение:** преподаватель принял работу 12.10.2026, по предоставленному сообщению Skillbox; [курс завершён](https://github.com/Sarmagon/python-portfolio/blob/main/certificates/skillbox-django.png). Слияние GitLab MR#8 не подтверждено. Публичные исходники пока не опубликованы: требуется уточнить лицензию предоставленного frontend. Очередь не использует Celery/Redis, оплата работает через локальный mock-сервис без настоящих банковских данных.
+Учебный проект. Привычки, ежедневные отметки, история и напоминания с часовыми поясами. JWT, проверка доступа владельца, зашифрованное хранение токенов в боте, миграции и автоматические проверки.
 
-### Django CRM
+Python, FastAPI, pyTelegramBotAPI, PostgreSQL, SQLAlchemy, Alembic, pytest, Poetry, Docker Compose.
 
-[Исходный код](https://github.com/Sarmagon/django-crm)
+[Исходный код](https://github.com/Sarmagon/habit-tracker-telegram-fastapi)
 
-Услуги, рекламные кампании, лиды, договоры, активные клиенты и статистика. Авторизация и роли оператора, маркетолога и менеджера, перевод лида в клиента. Django ORM, PostgreSQL, Docker Compose. Проверены 3 теста, системная проверка Django и миграции. Выход выполняется POST с CSRF. Pylint имеет замечания; зелёный CI не заявляется. Локальное учебное приложение.
+**Django CRM:** услуги, кампании, лиды, договоры, клиенты; роли и статистика рекламы. Django, PostgreSQL, Docker Compose. [Код](https://github.com/Sarmagon/django-crm).
 
-### SportTogether Architecture
+**SportTogether:** итоговый проект курса «Архитектор программного обеспечения», Skillbox. Требования, ADR, NFR, диаграммы, риски, компромиссы и стоимость владения. [Материалы](https://github.com/Sarmagon/sport-together-architecture).
 
-[Архитектурные материалы](https://github.com/Sarmagon/sport-together-architecture)
+**Image Processing:** сервис обработки изображений на Flask, Celery и Redis. [Код](../image-processing-service/).
 
-Завершённый проект курса «Архитектор программного обеспечения»: требования, стейкхолдеры, ADR, NFR, архитектурные диаграммы, сценарии, риски, компромиссы, стоимость владения и презентация. Это проектирование системы; работающий backend SportTogether не заявляется.
-
-Другие проекты: [Cookbook, обработка изображений, Deployment Lab, Parking API, Telegram-бот, File Sync](https://github.com/Sarmagon/python-portfolio#дополнительные-проекты).
+[Все проекты и сертификаты](../README.md)
 
 ## Опыт работы
 
@@ -83,3 +84,5 @@
 Английский — A1. Интересуют REST API, интеграции, автоматизация и backend-системы. Направление развития — production-развёртывание и наблюдаемость.
 
 Обновлено 12 октября 2026 года.
+
+Обновлено 13 октября 2026 года.

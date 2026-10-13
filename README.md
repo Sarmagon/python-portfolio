@@ -14,11 +14,18 @@
 
 ## Основные проекты
 
-### Habit Tracker — Telegram и FastAPI
+### Megano — интернет-магазин на Django
 
-[Исходный код](https://github.com/Sarmagon/habit-tracker-telegram-fastapi) · [CI](https://github.com/Sarmagon/habit-tracker-telegram-fastapi/actions/workflows/ci.yml)
+Итоговый проект курса «Python-фреймворк Django», Skillbox.
 
-Привычки, ежедневные отметки, история и напоминания с часовыми поясами IANA. Отдельные Telegram frontend и HTTP backend; JWT, Argon2id для service secret, шифрование токенов бота, идемпотентные отметки. PostgreSQL, SQLAlchemy, Alembic, Poetry, Docker Compose. Проверены 47 тестов и отдельный тест PostgreSQL, Ruff и миграции. Учебный проект; публичное production-развёртывание не заявляется.
+[Исходный код на GitLab](https://gitlab.skillbox.ru/stanislav_smirnov_2/python_django_diploma/-/tree/master) · итоговая версия `master`, коммит `08891e9`; MR7 и MR8 слиты.
+
+Регистрация, профиль с аватаром, каталог, предложения продавцов, отзывы, корзина, оформление заказа, доставка и история заказов. Серверный расчёт суммы, резервирование остатков и идемпотентное оформление. Учебная оплата обрабатывается через очередь PaymentJob в базе данных и отдельный worker с повторными попытками.
+
+Медиа переведены в S3-совместимое хранилище SeaweedFS; перенос проверяет целостность файлов. Prometheus, Grafana и node-exporter показывают состояние сайта, базы данных, очереди и worker. В окончательной версии в Ubuntu прошли 66 тестов; Django check и проверка изменений моделей — без ошибок.
+
+**Стек:** Python, Django 5.2, SQLite, Poetry, Pillow, django-storages, Docker Compose, SeaweedFS, Prometheus, Grafana, node-exporter. Интеграция Sentry подготовлена; отправка событий во внешний сервис не проверена. Публичное развёртывание не проверено. Фронтенд основан на предоставленном учебном шаблоне, платёжный сервис учебный. Доступ к GitLab может требовать авторизации. Отдельная публикация на GitHub ожидает уточнения прав на фронтенд и согласования.
+
 
 ### Twitter Clone Backend
 
@@ -26,11 +33,11 @@
 
 Итоговый проект Python Advanced: REST API микроблогов, API-ключи, твиты, лента, лайки, подписки и загрузка изображений. FastAPI, PostgreSQL, SQLAlchemy, Alembic, Docker Compose, Nginx. 40 тестов, покрытие 78%, Ruff. Предоставленный готовый frontend отделён от собственного backend; собственный код не скрыт из статистики языков.
 
-### Django Marketplace — Megano
+### Habit Tracker — Telegram и FastAPI
 
-Принятый итоговый проект Django. Каталог, предложения продавцов, отзывы, профиль, корзина, оформление заказа, доставка, история и учебная оплата. Серверный расчёт суммы, транзакционное резервирование остатков, ключ идемпотентности checkout, очередь PaymentJob в БД с повторными попытками и lease. Django 5.2, SQLite, Poetry, Pillow; 58 тестов прошли.
+[Исходный код](https://github.com/Sarmagon/habit-tracker-telegram-fastapi) · [CI](https://github.com/Sarmagon/habit-tracker-telegram-fastapi/actions/workflows/ci.yml)
 
-**Подтверждение:** преподаватель принял работу 12.10.2026, по предоставленному сообщению Skillbox; [курс завершён](certificates/skillbox-django.png). Слияние GitLab MR#8 не подтверждено. Публичные исходники пока не опубликованы: требуется уточнить лицензию предоставленного frontend. Очередь не использует Celery/Redis, оплата работает через локальный mock-сервис без настоящих банковских данных.
+Привычки, ежедневные отметки, история и напоминания с часовыми поясами IANA. Отдельные Telegram frontend и HTTP backend; JWT, Argon2id для service secret, шифрование токенов бота, идемпотентные отметки. PostgreSQL, SQLAlchemy, Alembic, Poetry, Docker Compose. Проверены 47 тестов и отдельный тест PostgreSQL, Ruff и миграции. Учебный проект; публичное production-развёртывание не заявляется.
 
 ### Django CRM
 
@@ -66,9 +73,10 @@
 | Интеграции и доступ | Telegram Bot API, HTTP API, SMTP; JWT, Django auth/groups, API-ключи |
 | Проверки | pytest, unittest, Ruff; flake8, black, isort, mypy в Cookbook; GitHub Actions |
 | Запуск | Docker, Docker Compose, Nginx, Poetry, pip, Linux, SSH, Git |
+| Мониторинг и хранение медиа | Prometheus, Grafana, node-exporter, django-storages, S3-совместимое SeaweedFS; Sentry — подготовленная интеграция |
 | Архитектура | ADR, NFR, анализ рисков, компромиссов и стоимости владения |
 
-Технологии указаны по конкретным проектам. Мониторинг Sentry/Prometheus/Grafana, S3 и RabbitMQ не включены в реализованный стек. Дальнейшее развитие: production-развёртывание, наблюдаемость и надёжность фоновых задач.
+Технологии указаны по конкретным проектам. Prometheus, Grafana, node-exporter и SeaweedFS реализованы в Megano. Интеграция Sentry подготовлена. Дальнейшее развитие: публичное развёртывание, проверка внешних интеграций и надёжность фоновых задач.
 
 ## Образование и сертификаты
 
@@ -96,4 +104,4 @@
 
 [GitHub](https://github.com/Sarmagon) · [Telegram @Sarmagon](https://t.me/Sarmagon) · [stasus.sv@mail.ru](mailto:stasus.sv@mail.ru)
 
-Обновлено 12 октября 2026 года.
+Обновлено 13 октября 2026 года.
