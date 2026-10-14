@@ -61,7 +61,6 @@
 | [Parking API](parking-api/) | Flask, SQLAlchemy, парковочные сессии; 9 тестов |
 | [Recipe Telegram Bot](recipe-telegram-bot/) | Telegram Bot API, Peewee и работа с рецептами |
 | [File Sync Service](file-sync-service/) | Синхронизация файлов через API Яндекс Диска, конфигурация, журналирование |
-| [Cookbook — архивный репозиторий](https://github.com/Sarmagon/fastapi-cookbook-ci) | Дубликат основных файлов Cookbook; сохранён архивным, основная версия здесь |
 
 ## Технологии
 
