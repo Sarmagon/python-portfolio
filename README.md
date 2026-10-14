@@ -2,7 +2,7 @@
 
 Станислав Смирнов · Москва · **Junior Python Backend Developer**.
 
-Завершил программу Python-разработчика (615 академических часов), курсы Django, Python Advanced и архитектуры ПО. Создаю учебные backend-проекты с API, базами данных, фоновыми задачами и тестами. Ищу первую роль в Python backend; коммерческий опыт разработки не заявляю.
+Завершил программу Python-разработчика (615 академических часов), курсы Django, Python Advanced и архитектуры ПО. Создаю учебные backend-проекты с API, базами данных, фоновыми задачами и тестами. Ищу первую роль в Python backend.
 
 ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
@@ -93,8 +93,9 @@
 ## Проверки
 
 [![Cookbook CI](https://github.com/Sarmagon/python-portfolio/actions/workflows/cookbook-ci.yml/badge.svg)](https://github.com/Sarmagon/python-portfolio/actions/workflows/cookbook-ci.yml)
+[![Image Processing CI](https://github.com/Sarmagon/python-portfolio/actions/workflows/image-service-ci.yml/badge.svg)](https://github.com/Sarmagon/python-portfolio/actions/workflows/image-service-ci.yml)
 
-Каждый CI относится только к соответствующему проекту. Проекты являются учебными и практическими; публичные production-сервисы и коммерческий опыт не заявляются. Тесты Image Processing с внешним SMTP повторно не запускались.
+Каждый CI относится только к соответствующему проекту. Проекты являются учебными и практическими; публичные production-сервисы и коммерческий опыт не заявляются. Image Processing проверяется с подменой SMTP и отдельным Redis; CI не подтверждает доставку в реальный почтовый ящик.
 
 ## Структура и хранение
 
@@ -104,4 +105,4 @@
 
 [GitHub](https://github.com/Sarmagon) · [Telegram @Sarmagon](https://t.me/Sarmagon) · [stasus.sv@mail.ru](mailto:stasus.sv@mail.ru)
 
-Обновлено 13 октября 2026 года.
+Обновлено 14 октября 2026 года.
