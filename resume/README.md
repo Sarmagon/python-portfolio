@@ -2,7 +2,7 @@
 
 **Junior Python Backend Developer** · Москва
 
-Актуальная текстовая версия — ниже. [Предыдущая версия PDF от 12.10.2026](stanislav-smirnov-python-backend.pdf).
+Актуальная текстовая версия — ниже. DOCX от 14.10.2026 оформлен и проверен владельцем в Word. Предыдущий PDF удалён из актуального каталога.
 
 [GitHub](https://github.com/Sarmagon) · [Telegram @Sarmagon](https://t.me/Sarmagon) · [stasus.sv@mail.ru](mailto:stasus.sv@mail.ru)
 
