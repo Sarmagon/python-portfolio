@@ -25,13 +25,13 @@
 
 ## Проекты
 
-### Megano — интернет-магазин на Django
+### Лавка — интернет-магазин на Django
 
-Итоговый проект курса «Python-фреймворк Django», Skillbox. Регистрация, профиль с аватаром, каталог, корзина, оформление и история заказов. Очередь учебной оплаты в базе данных с отдельным worker. Медиа в SeaweedFS с проверкой целостности при переносе; мониторинг Prometheus, Grafana и node-exporter. Подготовлена интеграция Sentry. В итоговой версии в Ubuntu прошли 66 тестов.
+Итоговый проект курса «Python-фреймворк Django», Skillbox. Регистрация, профиль с аватаром, каталог, корзина, оформление и история заказов. Очередь учебной оплаты в базе данных с отдельным worker. Медиа в SeaweedFS с проверкой целостности при переносе; мониторинг Prometheus, Grafana и node-exporter. Подготовлена интеграция Sentry. 72 теста; системная проверка Django и модели — без ошибок.
 
-Python, Django 5.2, SQLite, Poetry, Docker Compose, SeaweedFS, Prometheus, Grafana. Предоставленный учебный frontend; платёжный сервис учебный.
+Python, Django 5.2, SQLite, Poetry, Docker Compose, SeaweedFS, Prometheus, Grafana. Собственный адаптивный интерфейс, созданный с помощью Codex; 12 вымышленных товаров и сгенерированные изображения. Развитие итогового проекта Megano; платёжный сервис учебный.
 
-[Исходный код на GitLab](https://gitlab.skillbox.ru/stanislav_smirnov_2/python_django_diploma/-/tree/master)
+[Исходный код на GitHub](https://github.com/Sarmagon/lavka-django)
 
 ### Twitter Clone Backend
 
