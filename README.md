@@ -58,7 +58,7 @@
 | [Cookbook API](cookbook-api/) | Async FastAPI, SQLAlchemy, Pydantic, SQLite; 7 тестов и CI с проверками стиля и типов |
 | [Image Processing Service](image-processing-service/) | Flask, Celery, Redis, Pillow, ZIP, SMTP; 10 тестов с подменой SMTP; CI, проверка ошибок обработки и отправки |
 | [Django Deployment Lab](https://github.com/Sarmagon/skillbox-django-deploy) | Poetry, Docker Compose, Linux VM/SSH; 10 тестов. Runserver и DEBUG=1 — учебные ограничения |
-| [Parking API](parking-api/) | Flask, SQLAlchemy, парковочные сессии; 9 тестов |
+| [Parking API](parking-api/) | Flask, SQLAlchemy, парковочные сессии; 9 тестов и CI |
 | [Recipe Telegram Bot](recipe-telegram-bot/) | Telegram Bot API, Peewee и работа с рецептами |
 | [File Sync Service](file-sync-service/) | Синхронизация файлов через API Яндекс Диска, конфигурация, журналирование |
 
@@ -93,6 +93,8 @@
 
 [![Cookbook CI](https://github.com/Sarmagon/python-portfolio/actions/workflows/cookbook-ci.yml/badge.svg)](https://github.com/Sarmagon/python-portfolio/actions/workflows/cookbook-ci.yml)
 [![Image Processing CI](https://github.com/Sarmagon/python-portfolio/actions/workflows/image-service-ci.yml/badge.svg)](https://github.com/Sarmagon/python-portfolio/actions/workflows/image-service-ci.yml)
+
+[![Parking CI](https://github.com/Sarmagon/python-portfolio/actions/workflows/parking-ci.yml/badge.svg)](https://github.com/Sarmagon/python-portfolio/actions/workflows/parking-ci.yml)
 
 Каждый CI относится только к соответствующему проекту. Проекты являются учебными и практическими; публичные production-сервисы и коммерческий опыт не заявляются. Image Processing проверяется с подменой SMTP и отдельным Redis; CI не подтверждает доставку в реальный почтовый ящик.
 
